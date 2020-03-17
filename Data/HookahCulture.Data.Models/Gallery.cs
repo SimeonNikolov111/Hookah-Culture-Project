@@ -8,9 +8,8 @@
     {
         public Gallery()
         {
-            this.imageCollection = new HashSet<string>();
+            this.ImageCollection = new HashSet<string>();
         }
-
-        public IEnumerable<string> imageCollection { get; set; }
+        public IEnumerable<string> ImageCollection { get; set; }
     }
 }

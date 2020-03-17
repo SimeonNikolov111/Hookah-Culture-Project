@@ -1,13 +1,20 @@
 ﻿namespace HookahCulture.Web.Controllers
 {
     using System.Diagnostics;
-
+    using HookahCulture.Data.Common.Repositories;
+    using HookahCulture.Data.Models;
     using HookahCulture.Web.ViewModels;
-
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
     {
+        private readonly IDeletableEntityRepository<Post> postRepository;
+
+        public HomeController(IDeletableEntityRepository<Post> postRepository)
+        {
+            this.postRepository = postRepository;
+        }
+
         public IActionResult Index()
         {
             return this.View();
