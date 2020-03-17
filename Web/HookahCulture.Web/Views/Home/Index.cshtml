@@ -1,4 +1,5 @@
 ﻿@using HookahCulture.Common
+@model HookahCulture.Web.ViewModels.Home.IndexViewModel
 @{
     this.ViewData["Title"] = "Home Page";
 }
@@ -7,3 +8,14 @@
     <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@foreach (var post in Model.Posts)
+{
+    <div class="media">
+        <img src="@post.ImageUrl" width="100" class="align-self-start mr-3" alt="...">
+        <div class="media-body">
+            <h5 class="mt-0">Post from this user</h5>
+            <p>@post.Text</p>
+        </div>
+    </div>
+}

@@ -1,9 +1,11 @@
 ﻿namespace HookahCulture.Web.Controllers
 {
     using System.Diagnostics;
+    using System.Linq;
     using HookahCulture.Data.Common.Repositories;
     using HookahCulture.Data.Models;
     using HookahCulture.Web.ViewModels;
+    using HookahCulture.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
@@ -17,7 +19,16 @@
 
         public IActionResult Index()
         {
-            return this.View();
+            var viewModel = new IndexViewModel();
+            var posts = this.postRepository.All().Select(x => new IndexPostViewModel
+            {
+                ImageUrl = x.ImageUrl,
+                Text = x.Text,
+                Likes = x.Likes,
+            }).ToList();
+
+            viewModel.Posts = posts;
+            return this.View(viewModel);
         }
 
         public IActionResult Privacy()
