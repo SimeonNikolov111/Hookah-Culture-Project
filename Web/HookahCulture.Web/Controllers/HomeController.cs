@@ -2,30 +2,25 @@
 {
     using System.Diagnostics;
     using System.Linq;
-    using HookahCulture.Data.Common.Repositories;
     using HookahCulture.Data.Models;
+    using HookahCulture.Services.Data;
     using HookahCulture.Web.ViewModels;
     using HookahCulture.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
     {
-        private readonly IDeletableEntityRepository<Post> postRepository;
+        private readonly IPostsService postsService;
 
-        public HomeController(IDeletableEntityRepository<Post> postRepository)
+        public HomeController(IPostsService postsService)
         {
-            this.postRepository = postRepository;
+            this.postsService = postsService;
         }
 
         public IActionResult Index()
         {
             var viewModel = new IndexViewModel();
-            var posts = this.postRepository.All().Select(x => new IndexPostViewModel
-            {
-                ImageUrl = x.ImageUrl,
-                Text = x.Text,
-                Likes = x.Likes,
-            }).ToList();
+            var posts = this.postsService.GetAllPosts();
 
             viewModel.Posts = posts;
             return this.View(viewModel);

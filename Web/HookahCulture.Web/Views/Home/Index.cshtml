@@ -11,11 +11,16 @@
 
 @foreach (var post in Model.Posts)
 {
-    <div class="media">
-        <img src="@post.ImageUrl" width="100" class="align-self-start mr-3" alt="...">
-        <div class="media-body">
-            <h5 class="mt-0">Post from this user</h5>
-            <p>@post.Text</p>
+    <div class="card" style="width: 18rem;">
+        <img src="@post.ImageUrl" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@post.Text</h5>
+            <p class="card-text">@post.Text</p>
+            <a href="#" class="btn btn-primary">Like</a>
         </div>
     </div>
 }
+
+
+
+

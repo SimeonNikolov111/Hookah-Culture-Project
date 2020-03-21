@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\HookahCulture.Data.Common\HookahCulture.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\HookahCulture.Data.Models\HookahCulture.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\HookahCulture.Web.ViewModels\HookahCulture.Web.ViewModels.csproj" />
     <ProjectReference Include="..\HookahCulture.Services.Mapping\HookahCulture.Services.Mapping.csproj" />
   </ItemGroup>
 

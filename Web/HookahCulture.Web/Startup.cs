@@ -60,6 +60,7 @@
             // Application services
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(configuration.GetSection("SendGridApiKey").Value));
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IPostsService, PostsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
