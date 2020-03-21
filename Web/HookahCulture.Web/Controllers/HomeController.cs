@@ -20,7 +20,7 @@
         public IActionResult Index()
         {
             var viewModel = new IndexViewModel();
-            var posts = this.postsService.GetAllPosts();
+            var posts = this.postsService.GetAllPosts<IndexPostViewModel>();
 
             viewModel.Posts = posts;
             return this.View(viewModel);

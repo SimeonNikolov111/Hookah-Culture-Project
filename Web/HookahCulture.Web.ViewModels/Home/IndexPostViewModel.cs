@@ -1,6 +1,9 @@
-﻿namespace HookahCulture.Web.ViewModels.Home
+﻿using HookahCulture.Data.Models;
+using HookahCulture.Services.Mapping;
+
+namespace HookahCulture.Web.ViewModels.Home
 {
-    public class IndexPostViewModel
+    public class IndexPostViewModel : IMapFrom<Post>
     {
         public string Text { get; set; }
 

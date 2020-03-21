@@ -1,9 +1,12 @@
 ﻿using HookahCulture.Data.Common.Repositories;
 using HookahCulture.Data.Models;
+using HookahCulture.Services.Mapping;
 using HookahCulture.Web.ViewModels.Home;
+using HookahCulture.Web.ViewModels.Posts;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HookahCulture.Services.Data
 {
@@ -16,16 +19,24 @@ namespace HookahCulture.Services.Data
             this.postRepository = postRepository;
         }
 
-        public IEnumerable<IndexPostViewModel> GetAllPosts()
+        public IEnumerable<T> GetAllPosts<T>()
         {
-            var posts = this.postRepository.All().Select(x => new IndexPostViewModel
-            {
-                ImageUrl = x.ImageUrl,
-                Text = x.Text,
-                Likes = x.Likes,
-            }).ToList();
+            var posts = this.postRepository.All().To<T>();
 
             return posts;
+        }
+
+        public async Task CreateAsync(string text, string imageUrl, string userId)
+        {
+            var post = new Post()
+            {
+                Text = text,
+                ImageUrl = imageUrl,
+                UserId = userId,
+            };
+
+            await this.postRepository.AddAsync(post);
+            await this.postRepository.SaveChangesAsync();
         }
     }
 }

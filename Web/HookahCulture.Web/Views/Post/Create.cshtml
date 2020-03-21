@@ -1,0 +1,15 @@
+﻿@using HookahCulture.Web.ViewModels;
+@model HookahCulture.Web.ViewModels.Posts.CreatePostInputViewModel
+    <form>
+        <div>
+            <label asp-for="Text"></label>
+            <input asp-for="Text" class="form-control" />
+            <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="ImageUrl"></label>
+            <input asp-for="ImageUrl"  class="form-control" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+        <button type="submit" asp-action="Create" formmethod="post" class="btn btn-primary">Submit</button>
+    </form>
