@@ -31,7 +31,7 @@
         public IActionResult Create(string text, string imageUrl)
         {
             string userId = this.userManager.GetUserId(this.User);
-            this.postsService.CreateAsync(text, imageUrl, userId);
+            this.postsService.Create(text, imageUrl, userId);
             return this.Redirect("/Home/Index");
         }
     }

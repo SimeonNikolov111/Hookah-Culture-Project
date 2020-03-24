@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\HookahCulture.Data.Common\HookahCulture.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\HookahCulture.Data.Models\HookahCulture.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\HookahCulture.Data\HookahCulture.Data.csproj" />
     <ProjectReference Include="..\..\Web\HookahCulture.Web.ViewModels\HookahCulture.Web.ViewModels.csproj" />
     <ProjectReference Include="..\HookahCulture.Services.Mapping\HookahCulture.Services.Mapping.csproj" />
   </ItemGroup>

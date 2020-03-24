@@ -1,4 +1,5 @@
-﻿using HookahCulture.Data.Common.Repositories;
+﻿using HookahCulture.Data;
+using HookahCulture.Data.Common.Repositories;
 using HookahCulture.Data.Models;
 using HookahCulture.Services.Mapping;
 using HookahCulture.Web.ViewModels.Home;
@@ -12,21 +13,21 @@ namespace HookahCulture.Services.Data
 {
     public class PostsService : IPostsService
     {
-        private readonly IDeletableEntityRepository<Post> postRepository;
+        private readonly ApplicationDbContext dbContext;
 
-        public PostsService(IDeletableEntityRepository<Post> postRepository)
+        public PostsService( ApplicationDbContext dbContext)
         {
-            this.postRepository = postRepository;
+            this.dbContext = dbContext;
         }
 
         public IEnumerable<T> GetAllPosts<T>()
         {
-            var posts = this.postRepository.All().To<T>();
+            var posts = this.dbContext.Posts.To<T>().ToList();
 
             return posts;
         }
 
-        public async Task CreateAsync(string text, string imageUrl, string userId)
+        public void Create(string text, string imageUrl, string userId)
         {
             var post = new Post()
             {
@@ -35,8 +36,8 @@ namespace HookahCulture.Services.Data
                 UserId = userId,
             };
 
-            await this.postRepository.AddAsync(post);
-            await this.postRepository.SaveChangesAsync();
+            this.dbContext.Posts.Add(post);
+            this.dbContext.SaveChanges();
         }
     }
 }

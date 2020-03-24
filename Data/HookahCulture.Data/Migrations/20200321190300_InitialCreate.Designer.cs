@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahCulture.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200317190141_ModelChanges")]
-    partial class ModelChanges
+    [Migration("20200321190300_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -10,6 +10,6 @@ namespace HookahCulture.Services.Data
     {
         IEnumerable<T> GetAllPosts<T>();
 
-        Task CreateAsync(string text, string imageUrl, string userId);
+        void Create(string text, string imageUrl, string userId);
     }
 }

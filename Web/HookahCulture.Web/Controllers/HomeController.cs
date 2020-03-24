@@ -6,6 +6,7 @@
     using HookahCulture.Services.Data;
     using HookahCulture.Web.ViewModels;
     using HookahCulture.Web.ViewModels.Home;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
@@ -17,6 +18,7 @@
             this.postsService = postsService;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var viewModel = new IndexViewModel();
