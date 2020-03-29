@@ -15,7 +15,7 @@ namespace HookahCulture.Services.Data
     {
         private readonly ApplicationDbContext dbContext;
 
-        public PostsService( ApplicationDbContext dbContext)
+        public PostsService(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
