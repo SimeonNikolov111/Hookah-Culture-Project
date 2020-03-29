@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HookahCulture.Services.Data
 {
-    public class LoginPageInfoService
+    public class LoginPageInfoService : ILoginPageInfoService
     {
         private readonly ApplicationDbContext dbContext;
 
