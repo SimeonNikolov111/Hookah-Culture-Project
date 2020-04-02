@@ -4,6 +4,7 @@ using HookahCulture.Data.Models;
 using HookahCulture.Services.Mapping;
 using HookahCulture.Web.ViewModels.Home;
 using HookahCulture.Web.ViewModels.Posts;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace HookahCulture.Services.Data
     {
         private readonly ApplicationDbContext dbContext;
 
-        public PostsService(ApplicationDbContext dbContext)
+        public PostsService(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             this.dbContext = dbContext;
         }
@@ -29,11 +30,13 @@ namespace HookahCulture.Services.Data
 
         public void Create(string text, string imageUrl, string userId)
         {
+            var user = this.dbContext.Users.Where(u => u.Id == userId).FirstOrDefault();
             var post = new Post()
             {
                 Text = text,
                 ImageUrl = imageUrl,
                 UserId = userId,
+                User = user,
             };
 
             this.dbContext.Posts.Add(post);
