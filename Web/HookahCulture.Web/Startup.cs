@@ -11,6 +11,7 @@
     using HookahCulture.Services.Data;
     using HookahCulture.Services.Mapping;
     using HookahCulture.Services.Messaging;
+    using HookahCulture.Web.Hub;
     using HookahCulture.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -63,6 +64,7 @@
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<LoginPageInfoService>();
             services.AddTransient<IVotesService, VotesService>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,6 +111,7 @@
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();
+                        endpoints.MapHub<ChatHub>("/chat");
                     });
         }
     }
