@@ -16,16 +16,12 @@
 
         public string ImageUrl { get; set; }
 
-        public int Likes { get; set; }
-
-        public int Dislikes { get; set; }
-
         public ICollection<Comment> Comments { get; set; }
 
         [Required]
         public string UserId { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Vote> Votes { get; set; }
     }

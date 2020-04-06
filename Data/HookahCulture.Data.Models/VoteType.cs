@@ -1,8 +1,8 @@
-﻿namespace HookahCulture.Data.Models
-{
-    public enum VoteType
-    {
-        DownVote = -1,
-        UpVote = 1,
-    }
-}
+﻿//namespace HookahCulture.Data.Models
+//{
+//    public enum VoteType
+//    {
+//        DownVote = -1,
+//        UpVote = 1,
+//    }
+//}

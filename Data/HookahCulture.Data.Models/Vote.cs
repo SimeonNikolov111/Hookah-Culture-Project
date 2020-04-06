@@ -17,6 +17,8 @@ namespace HookahCulture.Data.Models
 
         public ApplicationUser User { get; set; }
 
-        public VoteType Type { get; set; }
+        //public VoteType Type { get; set; }
+
+        public bool IsUpVote { get; set; }
     }
 }

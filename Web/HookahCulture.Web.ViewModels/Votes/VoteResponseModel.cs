@@ -6,8 +6,8 @@
 
     public class VoteResponseModel
     {
-        public int Likes { get; set; }
+        public int UpVotes { get; set; }
 
-        public int Dislikes { get; set; }
+        public int DownVotes { get; set; }
     }
 }

@@ -1,12 +1,10 @@
-﻿namespace HookahCulture.Services.Data
+﻿namespace ForumSystem.Services.Data
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
     using HookahCulture.Data;
     using HookahCulture.Data.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class VotesService : IVotesService
     {
@@ -17,37 +15,47 @@
             this.dbContext = dbContext;
         }
 
-        public int GetDownVotes(int postId)
+        public int GetUpVotes(int postId)
         {
-            var votes = this.dbContext.Votes.Where(v => v.PostId == postId && v.Type.ToString() == "DownVote").Sum(x => (int)x.Type);
+            var votes = this.dbContext.Votes.Where(v => v.PostId == postId && v.IsUpVote == true).Count();
+
             return votes;
         }
 
-        public int GetUpVotes(int postId)
+        public int GetDownVotes(int postId)
         {
-            var votes = this.dbContext.Votes.Where(v => v.PostId == postId && v.Type.ToString() == "UpVote").Sum(x => (int)x.Type);
+            var votes = this.dbContext.Votes.Where(v => v.PostId == postId && v.IsUpVote == false).Count();
+
             return votes;
         }
 
         public async Task VoteAsync(int postId, string userId, bool isUpVote)
         {
-            var vote = this.dbContext.Votes.FirstOrDefault(v => v.PostId == postId && v.UserId == userId);
+            var vote = this.dbContext.Votes.FirstOrDefault(x => x.PostId == postId && x.UserId == userId);
 
             if (vote != null)
             {
-                vote.Type = isUpVote ? VoteType.UpVote : VoteType.DownVote;
+                if (isUpVote == true)
+                {
+                    vote.IsUpVote = true;
+                }
+                else if (isUpVote == false)
+                {
+                    vote.IsUpVote = false;
+                }
             }
             else
             {
-                vote = new Vote
+                vote = new Vote()
                 {
                     PostId = postId,
                     UserId = userId,
-                    Type = isUpVote ? VoteType.UpVote : VoteType.DownVote,
+                    IsUpVote = isUpVote,
                 };
+
+                await this.dbContext.Votes.AddAsync(vote);
             }
 
-            await this.dbContext.Votes.AddAsync(vote);
             await this.dbContext.SaveChangesAsync();
         }
     }

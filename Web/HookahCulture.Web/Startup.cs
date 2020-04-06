@@ -1,7 +1,7 @@
 ﻿namespace HookahCulture.Web
 {
     using System.Reflection;
-
+    using ForumSystem.Services.Data;
     using HookahCulture.Data;
     using HookahCulture.Data.Common;
     using HookahCulture.Data.Common.Repositories;

@@ -1,10 +1,13 @@
-﻿using HookahCulture.Data.Models;
+﻿using AutoMapper;
+using HookahCulture.Data.Models;
 using HookahCulture.Services.Mapping;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HookahCulture.Web.ViewModels.Home
 {
-    public class IndexPostViewModel : IMapFrom<Post>
+    public class IndexPostViewModel : IMapFrom<Post>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -14,12 +17,25 @@ namespace HookahCulture.Web.ViewModels.Home
 
         public string ImageUrl { get; set; }
 
-        public int Likes { get; set; }
+        public int UpVotes { get; set; }
 
-        public int Dislikes { get; set; }
+        public int DownVotes { get; set; }
 
         public string UserId { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Post, IndexPostViewModel>()
+                .ForMember(x => x.UpVotes, options =>
+                {
+                    options.MapFrom(p => p.Votes.Where(v => v.IsUpVote == true).Count());
+                })
+                .ForMember(x => x.DownVotes, options =>
+                {
+                    options.MapFrom(p => p.Votes.Where(v => v.IsUpVote == false).Count());
+                });
+        }
     }
 }
