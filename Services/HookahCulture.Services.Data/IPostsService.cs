@@ -8,8 +8,10 @@ namespace HookahCulture.Services.Data
 {
     public interface IPostsService
     {
-        IEnumerable<T> GetAllPosts<T>();
+        IEnumerable<T> GetAllPosts<T>(int? take = 5, int skip = 0);
 
         void Create(string text, string imageUrl, string userId);
+
+        int GetCountOfPosts();
     }
 }

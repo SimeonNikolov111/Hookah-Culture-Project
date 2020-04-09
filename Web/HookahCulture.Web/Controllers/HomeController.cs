@@ -1,5 +1,6 @@
 ﻿namespace HookahCulture.Web.Controllers
 {
+    using System;
     using System.Diagnostics;
     using System.Linq;
     using HookahCulture.Data.Models;
@@ -11,6 +12,8 @@
 
     public class HomeController : BaseController
     {
+        private const int ItemsPerPage = 5;
+
         private readonly IPostsService postsService;
 
         public HomeController(IPostsService postsService)
@@ -19,12 +22,17 @@
         }
 
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             var viewModel = new IndexViewModel();
-            var posts = this.postsService.GetAllPosts<IndexPostViewModel>();
+            var posts = this.postsService.GetAllPosts<IndexPostViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage);
 
             viewModel.Posts = posts;
+
+            int count = this.postsService.GetCountOfPosts();
+            viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            viewModel.CurrentPage = page;
+
             return this.View(viewModel);
         }
 

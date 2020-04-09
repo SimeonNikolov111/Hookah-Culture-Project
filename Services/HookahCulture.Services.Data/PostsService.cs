@@ -21,11 +21,16 @@ namespace HookahCulture.Services.Data
             this.dbContext = dbContext;
         }
 
-        public IEnumerable<T> GetAllPosts<T>()
+        public IEnumerable<T> GetAllPosts<T>(int? take = 5, int skip = 0)
         {
-            var posts = this.dbContext.Posts.To<T>().ToList();
+            var posts = this.dbContext.Posts.Skip(skip);
 
-            return posts;
+            if (take.HasValue)
+            {
+                posts = posts.Take(take.Value);
+            }
+
+            return posts.To<T>().ToList();
         }
 
         public void Create(string text, string imageUrl, string userId)
@@ -41,6 +46,11 @@ namespace HookahCulture.Services.Data
 
             this.dbContext.Posts.Add(post);
             this.dbContext.SaveChanges();
+        }
+
+        public int GetCountOfPosts()
+        {
+            return this.dbContext.Posts.Count();
         }
     }
 }
