@@ -1,0 +1,10 @@
+﻿@using HookahCulture.Web.ViewModels;
+@model HookahCulture.Web.ViewModels.Comment.CreateCommentInputViewModel
+    <form>
+        <div>
+            <label asp-for="Text"></label>
+            <input asp-for="Text" class="form-control" />
+            <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+        <button type="submit" asp-action="Create" formmethod="post" class="btn btn-primary">Submit</button>
+    </form>

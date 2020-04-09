@@ -107,18 +107,21 @@
                                         <p>@post.Text</p>
                                     </div>
                                     <div class="line-divider"></div>
-                                    <div class="post-comment">
-                                        <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-                                        <p><a href="timeline.html" class="profile-link">Diana </a><i class="em em-laughing"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </p>
-                                    </div>
-                                    <div class="post-comment">
-                                        <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-                                        <p><a href="timeline.html" class="profile-link">John</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </p>
-                                    </div>
-                                    <div class="post-comment">
-                                        <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-                                        <input type="text" class="form-control" placeholder="Post a comment">
-                                    </div>
+                                    @foreach (var comment in post.Comments)
+                                    {
+                                        <div class="post-comment">
+                                            <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
+                                            <p><a href="timeline.html" class="profile-link">@post.User.Email</a><i></i> @comment.Text</p>
+                                        </div>
+                                    }
+                                    <form asp-controller="Comment" asp-action="Create" method="post" id="AddCommentForm">
+                                        <div class="post-comment">
+                                            <input type="hidden" name="PostId" value="@post.Id" />
+                                            <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
+                                            <input type="text" name="Text" id="Text" class="form-control" placeholder="Post a comment">
+                                            <input type="submit" class="btn btn-primary" value="Add comment" />
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +129,7 @@
 
                     <!-- Newsfeed Common Side Bar Right
                     ================================================= -->
-                    <div class="col-md-2 static">
+                    @*<div class="col-md-2 static">
                         <div class="suggestions" id="sticky-sidebar">
                             <h4 class="grey">Who to Follow</h4>
                             <div class="follow-user">
@@ -165,7 +168,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>

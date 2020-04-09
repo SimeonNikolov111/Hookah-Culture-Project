@@ -64,6 +64,7 @@
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<LoginPageInfoService>();
             services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<ICommentsService, CommentsService>();
             services.AddSignalR();
         }
 

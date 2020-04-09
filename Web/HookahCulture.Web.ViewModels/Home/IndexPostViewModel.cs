@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HookahCulture.Data.Models;
 using HookahCulture.Services.Mapping;
+using HookahCulture.Web.ViewModels.Comment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace HookahCulture.Web.ViewModels.Home
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
+
+        public ICollection<CreateCommentInputViewModel> Comments { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
