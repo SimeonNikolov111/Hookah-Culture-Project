@@ -1,7 +1,9 @@
 ﻿namespace HookahCulture.Web.ViewModels.Home
 {
     using HookahCulture.Data.Models;
+    using Microsoft.AspNetCore.Identity;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class IndexViewModel
     {

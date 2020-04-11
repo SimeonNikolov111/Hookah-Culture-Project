@@ -33,7 +33,7 @@
                 <div class="col-md-3 static">
                     <div class="profile-card">
                         <img src="http://placehold.it/300x300" alt="user" class="profile-photo" />
-                        <h5><a href="timeline.html" class="text-white">Sarah Cruiz</a></h5>
+                        <h5><a href="timeline.html" class="text-white">Simeon Nikolov</a></h5>
                         <a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1,299 followers</a>
                     </div><!--profile card ends-->
                     <ul class="nav-news-feed">
@@ -90,7 +90,6 @@
                     @foreach (var post in Model.Posts)
                     {
                         <div class="post-content">
-                            <img src=@post.ImageUrl width="500" height="500" alt="post-image" class="img-responsive post-image" />
                             <div class="post-container">
                                 <img src="http://placehold.it/300x300" alt="user" class="profile-photo-md pull-left" />
                                 <div class="post-detail">
@@ -99,29 +98,42 @@
                                         <p class="text-muted">Post published at: @post.CreatedOn</p>
                                     </div>
                                     <div class="reaction">
-                                        <a class="btn text-green" href="#" method="post" onclick="sendVote(@post.Id, true)"><div class="icon ion-thumbsup" id="upVotes">@post.UpVotes</div></a>
-                                        <a class="btn text-red" href="#" method="post" onclick="sendVote(@post.Id, false)"><div class="fa fa-thumbs-down" id="downVotes">@post.DownVotes</div></a>
+                                        <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)"><div class="icon ion-thumbsup" id="upVotes">@post.UpVotes</div></a>
+                                        <a class="btn text-red" method="post" onclick="sendVote(@post.Id, false)"><div class="fa fa-thumbs-down" id="downVotes">@post.DownVotes</div></a>
                                     </div>
                                     <div class="line-divider"></div>
                                     <div class="post-text">
                                         <p>@post.Text</p>
                                     </div>
+                                    <img src=@post.ImageUrl width="500" height="500" alt="post-image" class="img-responsive post-image" />
                                     <div class="line-divider"></div>
-                                    @foreach (var comment in post.Comments)
+                                    @if (post.Comments.Count == 0)
                                     {
-                                        <div class="post-comment">
-                                            <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-                                            <p><a href="timeline.html" class="profile-link">@post.User.Email</a><i></i> @comment.Text</p>
-                                        </div>
+                                        <button class="alert alert-success" role="alert">
+                                            Be the first one to post a comment!
+                                        </button>
                                     }
-                                    <form asp-controller="Comment" asp-action="Create" method="post" id="AddCommentForm">
-                                        <div class="post-comment">
-                                            <input type="hidden" name="PostId" value="@post.Id" />
-                                            <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-                                            <input type="text" name="Text" id="Text" class="form-control" placeholder="Post a comment">
-                                            <input type="submit" class="btn btn-primary" value="Add comment" />
-                                        </div>
-                                    </form>
+                                    else
+                                    {
+                                        <button class="form-control" onclick="showCommentsFunction(@post.Id)" style="">Show All Comments</button>
+                                    }
+                                    <div class="line-divider"></div>
+                                    <div id="@post.Id" , style="display: none">
+                                        @foreach (var comment in post.Comments)
+                                        {
+                                            <div class="post-comment">
+                                                <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
+                                                <p><a href="timeline.html" class="profile-link">@post.User.Email</a><i></i> @comment.Text</p>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        <form id="myForm" asp-controller="Comment" asp-action="Create" method="post">
+                                            <input type="hidden" name="PostId" id="postId" value="@post.Id" />
+                                            <textarea type="text" name="text" class="form-control" placeholder="Type your comment here"></textarea>
+                                            <input type="submit" class="ion-android-radio-button-on" value="Add Comment" />
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +151,7 @@
                                 <li class="page-item">
                                     <a class="page-link"
                                        asp-route="routeWithPaging"
-                                       asp-route-page= "@(this.Model.CurrentPage - 1)">Previous</a>
+                                       asp-route-page="@(this.Model.CurrentPage - 1)">Previous</a>
                                 </li>
                             }
 
@@ -163,54 +175,11 @@
                                 <li class="page-item">
                                     <a class="page-link"
                                        asp-route="routeWithPaging"
-                                       asp-route-page= "@(this.Model.CurrentPage + 1)">Next</a>
+                                       asp-route-page="@(this.Model.CurrentPage + 1)">Next</a>
                                 </li>
                             }
                         </ul>
                     </nav>
-
-                    <!-- Newsfeed Common Side Bar Right
-                    ================================================= -->
-                    @*<div class="col-md-2 static">
-                            <div class="suggestions" id="sticky-sidebar">
-                                <h4 class="grey">Who to Follow</h4>
-                                <div class="follow-user">
-                                    <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-                                    <div>
-                                        <h5><a href="timeline.html">Diana Amber</a></h5>
-                                        <a href="#" class="text-green">Add friend</a>
-                                    </div>
-                                </div>
-                                <div class="follow-user">
-                                    <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-                                    <div>
-                                        <h5><a href="timeline.html">Cris Haris</a></h5>
-                                        <a href="#" class="text-green">Add friend</a>
-                                    </div>
-                                </div>
-                                <div class="follow-user">
-                                    <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-                                    <div>
-                                        <h5><a href="timeline.html">Brian Walton</a></h5>
-                                        <a href="#" class="text-green">Add friend</a>
-                                    </div>
-                                </div>
-                                <div class="follow-user">
-                                    <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-                                    <div>
-                                        <h5><a href="timeline.html">Olivia Steward</a></h5>
-                                        <a href="#" class="text-green">Add friend</a>
-                                    </div>
-                                </div>
-                                <div class="follow-user">
-                                    <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm pull-left" />
-                                    <div>
-                                        <h5><a href="timeline.html">Sophia Page</a></h5>
-                                        <a href="#" class="text-green">Add friend</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
                 </div>
             </div>
         </div>
@@ -229,35 +198,45 @@
         <script src="~/js/jquery.sticky-kit.min.js"></script>
         <script src="~/js/jquery.scrollbar.min.js"></script>
         <script src="~/js/script.js"></script>
+        <script src="~/js/jquery.form.js"></script>
 </body>
 </html>
 
 @section Scripts {
     <script>
-        //function showAddCommentForm(parentId) {
-        //    $("#AddCommentForm input[name='ParentId']").val(parentId);
-        //    $("#AddCommentForm").show();
-        //    $([document.documentElement, document.body]).animate({
-        //        scrollTop: $("#AddCommentForm").offset().top
-        //    }, 1000);
-        //}
+
+        function showCommentsFunction(postId) {
+            var x = document.getElementById(postId);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
 
         function sendVote(postId, isUpVote) {
-            //var token = $("#votesForm input[name=__RequestVerificationToken]").val();
             var json = { postId: postId, isUpVote: isUpVote };
             $.ajax({
-                url: "/api/votes",
+                url: "/api/vote",
                 type: "POST",
                 data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                //headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
                     $("#upVotes").html(data.upVotes);
                     $("#downVotes").html(data.downVotes);
+                    document.location.reload(true);
                 }
             });
+
         }
+        // wait for the DOM to be loaded
+        $(document).ready(function () {
+            // bind 'myForm' and provide a simple callback function
+            $('#myForm').ajaxForm(function () {
+                document.location.reload(false);
+            });
+        });
     </script>
 }
 
