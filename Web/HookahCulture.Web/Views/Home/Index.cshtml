@@ -98,8 +98,8 @@
                                         <p class="text-muted">Post published at: @post.CreatedOn</p>
                                     </div>
                                     <div class="reaction">
-                                        <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)"><div class="icon ion-thumbsup" id="upVotes">@post.UpVotes</div></a>
-                                        <a class="btn text-red" method="post" onclick="sendVote(@post.Id, false)"><div class="fa fa-thumbs-down" id="downVotes">@post.DownVotes</div></a>
+                                        <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)"><div class="icon ion-thumbsup" id="upVotes_@post.Id">@post.UpVotes</div></a>
+                                        <a class="btn text-red" method="post" onclick="sendVote(@post.Id, false)"><div class="fa fa-thumbs-down" id="downVotes_@post.Id">@post.DownVotes</div></a>
                                     </div>
                                     <div class="line-divider"></div>
                                     <div class="post-text">
@@ -118,20 +118,20 @@
                                         <button class="form-control" onclick="showCommentsFunction(@post.Id)" style="">Show All Comments</button>
                                     }
                                     <div class="line-divider"></div>
-                                    <div id="@post.Id" , style="display: none">
+                                    <div id="@post.Id" style="display: none">
                                         @foreach (var comment in post.Comments)
                                         {
                                             <div class="post-comment">
                                                 <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
-                                                <p><a href="timeline.html" class="profile-link">@post.User.Email</a><i></i> @comment.Text</p>
+                                                <p id="returnTextHere"><a href="timeline.html" class="profile-link">@post.User.Email</a><i></i> @comment.Text</p>
                                             </div>
                                         }
                                     </div>
                                     <div>
-                                        <form id="myForm" asp-controller="Comment" asp-action="Create" method="post">
+                                        <form id="myForm_@post.Id" class="myform" asp-controller="Comment" asp-action="Create" method="post">
                                             <input type="hidden" name="PostId" id="postId" value="@post.Id" />
-                                            <textarea type="text" name="text" class="form-control" placeholder="Type your comment here"></textarea>
-                                            <input type="submit" class="ion-android-radio-button-on" value="Add Comment" />
+                                            <textarea name="text"></textarea>
+                                            <input type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
                                         </form>
                                     </div>
                                 </div>
@@ -204,14 +204,13 @@
 
 @section Scripts {
     <script>
-
         function showCommentsFunction(postId) {
             var x = document.getElementById(postId);
             if (x.style.display === "none") {
                 x.style.display = "block";
             } else {
                 x.style.display = "none";
-            }
+            };
         }
 
         function sendVote(postId, isUpVote) {
@@ -223,20 +222,19 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    $("#upVotes").html(data.upVotes);
-                    $("#downVotes").html(data.downVotes);
-                    document.location.reload(true);
+                    $("#upVotes_" + postId).html(data.upVotes);
+                    $("#downVotes_" + postId).html(data.downVotes);
                 }
             });
 
         }
-        // wait for the DOM to be loaded
-        $(document).ready(function () {
-            // bind 'myForm' and provide a simple callback function
-            $('#myForm').ajaxForm(function () {
-                document.location.reload(false);
+
+        function sendComment(postId) {
+            $("#myForm_"+postId).ajaxForm(function () {
+                alert("You have posted a comment successfully!");
+                document.location.reload(true);
             });
-        });
+        }
     </script>
 }
 

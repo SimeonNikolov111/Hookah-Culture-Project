@@ -22,7 +22,7 @@ namespace HookahCulture.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCommentInputViewModel input)
+        public async Task<ActionResult<CreateCommentInputViewModel>> Create(CreateCommentInputViewModel input)
         {
             if (string.IsNullOrEmpty(input.Text))
             {
@@ -34,7 +34,7 @@ namespace HookahCulture.Web.Controllers
                 var user = await this.userManager.GetUserAsync(this.User);
                 await this.commentsService.Create(user, userId, input.PostId, input.Text);
 
-                return this.Redirect("/");
+                return this.NoContent();
             }
         }
     }
