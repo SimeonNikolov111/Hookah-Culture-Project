@@ -33,13 +33,14 @@ namespace HookahCulture.Services.Data
             return posts.To<T>().ToList();
         }
 
-        public void Create(string text, string imageUrl, string userId)
+
+        public void Create(string text, string imagePath, string userId)
         {
             var user = this.dbContext.Users.Where(u => u.Id == userId).FirstOrDefault();
             var post = new Post()
             {
                 Text = text,
-                ImageUrl = imageUrl,
+                ImagePath = imagePath,
                 UserId = userId,
                 User = user,
             };

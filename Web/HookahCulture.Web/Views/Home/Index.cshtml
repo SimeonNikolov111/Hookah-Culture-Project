@@ -1,25 +1,5 @@
 ﻿@using HookahCulture.Common
 @model HookahCulture.Web.ViewModels.Home.IndexViewModel
-@*@{
-        this.ViewData["Title"] = "Home Page";
-    }*@
-
-@*<div class="text-center">
-        <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    </div>
-
-    @foreach (var post in Model.Posts)
-    {
-        <div class="card" style="width: 18rem;">
-            <img src="@post.ImageUrl" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">@post.Text</h5>
-                <p class="card-text">@post.Text</p>
-                <a href="#" class="btn btn-primary">Like</a>
-            </div>
-        </div>
-    }*@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,32 +43,30 @@
                 <div class="col-md-7">
 
                     <!-- Post Create Box
-                    ================================================= -->
-                    <div class="create-post">
+    ================================================= -->
+                    <form enctype="multipart/form-data" class="create-post" asp-controller="Post" asp-action="Create">
                         <div class="row">
                             <div class="col-md-7 col-sm-7">
                                 <div class="form-group">
                                     <img src="http://placehold.it/300x300" alt="" class="profile-photo-md" />
-                                    <textarea name="texts" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
+                                    <textarea name="text" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-5 col-sm-5">
                                 <div class="tools">
-                                    <ul class="publishing-tools list-inline">
-                                        <li><a href="#"><i class="ion-compose"></i></a></li>
-                                        <li><a href="#"><i class="ion-images"></i></a></li>
-                                        <li><a href="#"><i class="ion-ios-videocam"></i></a></li>
-                                        <li><a href="#"><i class="ion-map"></i></a></li>
-                                    </ul>
-                                    <button class="btn btn-primary pull-right">Publish</button>
+                                    <input asp-for="Image" />
                                 </div>
                             </div>
                         </div>
-                    </div><!-- Post Create Box End-->
+                        <button type="submit" asp-controller="Post" asp-action="Create" formmethod="post" class="btn btn-primary pull-right">Publish</button>
+                    </form><!-- Post Create Box End-->
                     <!-- Post Content
-                    ================================================= -->
+    ================================================= -->
                     @foreach (var post in Model.Posts)
                     {
+
+                        var photoPath = "~/images/" + post.ImagePath;
+
                         <div class="post-content">
                             <div class="post-container">
                                 <img src="http://placehold.it/300x300" alt="user" class="profile-photo-md pull-left" />
@@ -105,7 +83,10 @@
                                     <div class="post-text">
                                         <p>@post.Text</p>
                                     </div>
-                                    <img src=@post.ImageUrl width="500" height="500" alt="post-image" class="img-responsive post-image" />
+                                    @if (!string.IsNullOrEmpty(post.ImagePath))
+                                    {
+                                        <img src=@photoPath asp-append-version="true" width="500" height="500" alt="post-image" class="img-responsive post-image imageThumbnail" />
+                                    }
                                     <div class="line-divider"></div>
                                     @if (post.Comments.Count == 0)
                                     {
@@ -230,7 +211,7 @@
         }
 
         function sendComment(postId) {
-            $("#myForm_"+postId).ajaxForm(function () {
+            $("#myForm_" + postId).ajaxForm(function () {
                 alert("You have posted a comment successfully!");
                 document.location.reload(true);
             });

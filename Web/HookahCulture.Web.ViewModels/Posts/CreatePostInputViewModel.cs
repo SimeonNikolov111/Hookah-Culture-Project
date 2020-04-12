@@ -1,5 +1,6 @@
 ﻿using HookahCulture.Services.Mapping;
 using HookahCulture.Data.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace HookahCulture.Web.ViewModels.Posts
 {
@@ -7,7 +8,7 @@ namespace HookahCulture.Web.ViewModels.Posts
     {
         public string Text { get; set; }
 
-        public string ImageUrl { get; set; }
+        public IFormFile Image { get; set; }
 
         public string UserId { get; set; }
     }

@@ -195,5 +195,19 @@
         <script src="~/js/jquery.form.js"></script>
     </environment>
     @this.RenderSection("Scripts", required: false)
+
+    @section Scripts {
+
+        <script>
+            $(document).ready(function ()
+            {
+                $('.custom-file-input').on("change", function ()
+                {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+                })
+            })
+        </script>
+    }
 </body>
 </html>

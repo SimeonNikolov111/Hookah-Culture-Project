@@ -2,6 +2,7 @@
 using HookahCulture.Data.Models;
 using HookahCulture.Services.Mapping;
 using HookahCulture.Web.ViewModels.Comment;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,9 @@ namespace HookahCulture.Web.ViewModels.Home
 
         public string Text { get; set; }
 
-        public string ImageUrl { get; set; }
+        public IFormFile Image { get; set; }
+
+        public string ImagePath { get; set; }
 
         public int UpVotes { get; set; }
 

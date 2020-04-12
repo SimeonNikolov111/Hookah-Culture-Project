@@ -1,6 +1,8 @@
 ﻿namespace HookahCulture.Web.ViewModels.Home
 {
+    using AutoMapper;
     using HookahCulture.Data.Models;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -12,5 +14,18 @@
         public int PagesCount { get; set; }
 
         public int CurrentPage { get; set; }
+
+        public IFormFile Image { get; set; }
+
+        public ApplicationUser User { get; set; }
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Post, IndexViewModel>()
+                .ForMember(x => x.User, options =>
+                {
+                    options.MapFrom(p => p);
+                });
+        }
     }
 }

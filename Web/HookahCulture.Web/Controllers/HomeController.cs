@@ -25,7 +25,7 @@
         public IActionResult Index(int page = 1)
         {
             var viewModel = new IndexViewModel();
-            var posts = this.postsService.GetAllPosts<IndexPostViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage);
+            var posts = this.postsService.GetAllPosts<IndexPostViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage).OrderByDescending(p => p.CreatedOn);
 
             viewModel.Posts = posts;
 
