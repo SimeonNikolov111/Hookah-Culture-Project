@@ -1,5 +1,7 @@
 ﻿namespace HookahCulture.Web.Controllers
 {
+    using System;
+    using System.IO;
 
     using HookahCulture.Data.Models;
     using HookahCulture.Services.Data;
@@ -8,8 +10,6 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.IO;
 
     public class PostController : Controller
     {
@@ -31,12 +31,12 @@
             string userId = this.userManager.GetUserId(this.User);
 
             string uniqueFileName = null;
-            if (model.Image != null)
+            if (model.PostCreationPictureUpload != null)
             {
                 string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.PostCreationPictureUpload.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                model.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                model.PostCreationPictureUpload.CopyTo(new FileStream(filePath, FileMode.Create));
             }
 
             this.postsService.Create(model.Text, uniqueFileName, userId);

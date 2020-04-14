@@ -3,6 +3,7 @@ using HookahCulture.Data.Common.Repositories;
 using HookahCulture.Data.Models;
 using HookahCulture.Services.Mapping;
 using HookahCulture.Web.ViewModels.Home;
+using HookahCulture.Web.ViewModels.PersonalTimeline;
 using HookahCulture.Web.ViewModels.Posts;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
@@ -15,20 +16,29 @@ namespace HookahCulture.Services.Data
     public class PostsService : IPostsService
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public PostsService(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
         public IEnumerable<T> GetAllPosts<T>(int? take = 5, int skip = 0)
         {
-            var posts = this.dbContext.Posts.Skip(skip);
+            var posts = this.dbContext.Posts.OrderByDescending(p => p.CreatedOn).Skip(skip);
 
             if (take.HasValue)
             {
                 posts = posts.Take(take.Value);
             }
+
+            return posts.To<T>().ToList();
+        }
+
+        public IEnumerable<T> GetAllPostsForSpecificUserTimeLine<T>(string userId)
+        {
+            var posts = this.dbContext.Posts.Where(p => p.UserId == userId).OrderByDescending(p => p.CreatedOn);
 
             return posts.To<T>().ToList();
         }

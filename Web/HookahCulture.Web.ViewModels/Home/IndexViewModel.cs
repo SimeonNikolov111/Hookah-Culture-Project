@@ -16,6 +16,6 @@
 
         public int CurrentPage { get; set; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile PostCreationPictureUpload { get; set; }
     }
 }

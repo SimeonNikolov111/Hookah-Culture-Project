@@ -16,7 +16,7 @@ namespace HookahCulture.Services.Data
             this.dbContext = dbContext;
         }
 
-        public async Task Create(ApplicationUser user,string userId, int postId, string text)
+        public async Task Create(ApplicationUser user, string userId, int postId, string text)
         {
             var comment = new Comment()
             {

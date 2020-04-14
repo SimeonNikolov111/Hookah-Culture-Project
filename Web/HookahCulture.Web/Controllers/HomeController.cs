@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.Linq;
+
     using HookahCulture.Data.Models;
     using HookahCulture.Services.Data;
     using HookahCulture.Web.ViewModels;
@@ -25,7 +26,7 @@
         public IActionResult Index(int page = 1)
         {
             var viewModel = new IndexViewModel();
-            var posts = this.postsService.GetAllPosts<IndexPostViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage).OrderByDescending(p => p.CreatedOn);
+            var posts = this.postsService.GetAllPosts<IndexPostViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage);
 
             viewModel.Posts = posts;
 

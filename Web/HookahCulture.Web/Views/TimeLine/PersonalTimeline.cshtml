@@ -1,0 +1,212 @@
+﻿@using HookahCulture.Data.Models;
+@model HookahCulture.Web.ViewModels.PersonalTimeline.PersonalTimelineInputViewModel;
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
+
+@{ var currentUser = await this.userManager.GetUserAsync(this.User);}
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="container">
+
+        <!-- Timeline
+        ================================================= -->
+        <div class="timeline">
+            <div class="timeline-cover">
+
+                <!--Timeline Menu for Large Screens-->
+                <div class="timeline-nav-bar hidden-sm hidden-xs">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="profile-info">
+                                <img src="http://placehold.it/300x300" alt="" class="img-responsive profile-photo" />
+                                <h3>@currentUser.FirstName @currentUser.LastName</h3>
+                                <p class="text-muted">Creative Director</p>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <ul class="list-inline profile-menu">
+                                <li><a href="timeline.html" class="active">Timeline</a></li>
+                                <li><a href="timeline-about.html">About</a></li>
+                                <li><a href="timeline-album.html">Album</a></li>
+                                <li><a href="timeline-friends.html">Friends</a></li>
+                            </ul>
+                            <ul class="follow-me list-inline">
+                                <li>1,299 people following her</li>
+                                <li><button class="btn-primary">Add Friend</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div><!--Timeline Menu for Large Screens End-->
+                <!--Timeline Menu for Small Screens-->
+                <div class="navbar-mobile hidden-lg hidden-md">
+                    <div class="profile-info">
+                        <img src="http://placehold.it/300x300" alt="" class="img-responsive profile-photo" />
+                        <h4>@currentUser.FirstName @currentUser.LastName</h4>
+                        <p class="text-muted">Creative Director</p>
+                    </div>
+                    <div class="mobile-menu">
+                        <ul class="list-inline">
+                            <li><a href="timline.html" class="active">Timeline</a></li>
+                            <li><a href="timeline-about.html">About</a></li>
+                            <li><a href="timeline-album.html">Album</a></li>
+                            <li><a href="timeline-friends.html">Friends</a></li>
+                        </ul>
+                        <button class="btn-primary">Add Friend</button>
+                    </div>
+                </div><!--Timeline Menu for Small Screens End-->
+
+            </div>
+            <div id="page-contents">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-7">
+
+                        <!-- Post Create Box
+                        ================================================= -->
+
+                        <form enctype="multipart/form-data" class="create-post" asp-controller="Post" asp-action="Create">
+                            <div class="row">
+                                <div class="col-md-7 col-sm-7">
+                                    <div class="form-group">
+                                        <img src="http://placehold.it/300x300" alt="" class="profile-photo-md" />
+                                        <textarea name="text" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 col-sm-5">
+                                    <div class="tools">
+                                        <input asp-for="PostCreationPictureUpload" />
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" asp-controller="Post" asp-action="Create" formmethod="post" class="btn btn-primary pull-right">Publish</button>
+                        </form><!-- Post Create Box End-->
+
+                        <!-- Post Content
+                        ================================================= -->
+                        <div class="post-content">
+
+                            <!--Post Date-->
+                            <div class="post-date hidden-xs hidden-sm">
+                                <h5>@currentUser.FirstName</h5>
+                                @foreach (var post in Model.Posts)
+                                {
+                                    <p class="text-grey">@post.CreatedOn.ToShortDateString()</p>
+                                }
+                            </div><!--Post Date End-->
+
+                            @foreach (var post in Model.Posts)
+                            {
+
+                                var photoPath = "~/images/" + post.ImagePath;
+
+                                <div class="post-content">
+                                    <div class="post-container">
+                                        <img src="http://placehold.it/300x300" alt="user" class="profile-photo-md pull-left" />
+                                        <div class="post-detail">
+                                            <div class="user-info">
+                                                <h5><a href="timeline.html" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following">following</span></h5>
+                                                <p class="text-muted">Post published at: @post.CreatedOn</p>
+                                            </div>
+                                            <div class="reaction">
+                                                <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)"><div class="icon ion-thumbsup" id="upVotes_@post.Id">@post.UpVotes</div></a>
+                                                <a class="btn text-red" method="post" onclick="sendVote(@post.Id, false)"><div class="fa fa-thumbs-down" id="downVotes_@post.Id">@post.DownVotes</div></a>
+                                            </div>
+                                            <div class="line-divider"></div>
+                                            <div class="post-text">
+                                                <p>@post.Text</p>
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(post.ImagePath))
+                                            {
+                                                <img src=@photoPath asp-append-version="true" width="500" height="500" alt="post-image" class="img-responsive post-image imageThumbnail" />
+                                            }
+                                            <div class="line-divider"></div>
+                                            @if (post.Comments.Count == 0)
+                                            {
+                                                <button class="alert alert-success" role="alert">
+                                                    Be the first one to post a comment!
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="form-control" onclick="showCommentsFunction(@post.Id)" style="">Show All Comments</button>
+                                            }
+                                            <div class="line-divider"></div>
+                                            <div id="@post.Id" style="display: none">
+                                                @foreach (var comment in post.Comments)
+                                                {
+                                                    <div class="post-comment">
+                                                        <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
+                                                        <p id="returnTextHere"><a href="timeline.html" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div>
+                                                <form id="myForm_@post.Id" class="myform" asp-controller="Comment" asp-action="Create" method="post">
+                                                    <input type="hidden" name="PostId" id="postId" value="@post.Id" />
+                                                    <textarea name="text"></textarea>
+                                                    <input type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--preloader-->
+            <div id="spinner-wrapper">
+                <div class="spinner"></div>
+            </div>
+
+            <!-- Scripts
+            ================================================= -->
+            <script src="js/jquery-3.1.1.min.js"></script>
+            <script src="js/bootstrap.min.js"></script>
+            <script src="js/jquery.sticky-kit.min.js"></script>
+            <script src="js/jquery.scrollbar.min.js"></script>
+            <script src="js/script.js"></script>
+            <script src="~/js/jquery.form.js"></script>
+
+</body>
+</html>
+
+@section Scripts {
+    <script>
+        function showCommentsFunction(postId) {
+            var x = document.getElementById(postId);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            };
+        }
+
+        function sendVote(postId, isUpVote) {
+            var json = { postId: postId, isUpVote: isUpVote };
+            $.ajax({
+                url: "/api/vote",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#upVotes_" + postId).html(data.upVotes);
+                    $("#downVotes_" + postId).html(data.downVotes);
+                }
+            });
+
+        }
+
+        function sendComment(postId) {
+            $("#myForm_" + postId).ajaxForm(function () {
+                alert("You have posted a comment successfully!");
+                document.location.reload(true);
+            });
+        }
+    </script>
+}
+
