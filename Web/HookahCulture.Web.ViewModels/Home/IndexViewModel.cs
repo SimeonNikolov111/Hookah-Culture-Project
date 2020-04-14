@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using HookahCulture.Data.Models;
+    using HookahCulture.Services.Mapping;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using System.Collections.Generic;
@@ -16,16 +17,5 @@
         public int CurrentPage { get; set; }
 
         public IFormFile Image { get; set; }
-
-        public ApplicationUser User { get; set; }
-
-        public void CreateMappings(IProfileExpression configuration)
-        {
-            configuration.CreateMap<Post, IndexViewModel>()
-                .ForMember(x => x.User, options =>
-                {
-                    options.MapFrom(p => p);
-                });
-        }
     }
 }

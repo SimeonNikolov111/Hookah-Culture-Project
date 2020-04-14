@@ -1,5 +1,10 @@
 ﻿@using HookahCulture.Common
+@using HookahCulture.Data.Models;
 @model HookahCulture.Web.ViewModels.Home.IndexViewModel
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
+
+@{ var currentUser = await this.userManager.GetUserAsync(this.User);}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +18,7 @@
                 <div class="col-md-3 static">
                     <div class="profile-card">
                         <img src="http://placehold.it/300x300" alt="user" class="profile-photo" />
-                        <h5><a href="timeline.html" class="text-white">Simeon Nikolov</a></h5>
+                        <h5><a href="timeline.html" class="text-white">@currentUser.FirstName @currentUser.LastName</a></h5>
                         <a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1,299 followers</a>
                     </div><!--profile card ends-->
                     <ul class="nav-news-feed">
@@ -43,7 +48,7 @@
                 <div class="col-md-7">
 
                     <!-- Post Create Box
-    ================================================= -->
+                    ================================================= -->
                     <form enctype="multipart/form-data" class="create-post" asp-controller="Post" asp-action="Create">
                         <div class="row">
                             <div class="col-md-7 col-sm-7">
@@ -61,7 +66,7 @@
                         <button type="submit" asp-controller="Post" asp-action="Create" formmethod="post" class="btn btn-primary pull-right">Publish</button>
                     </form><!-- Post Create Box End-->
                     <!-- Post Content
-    ================================================= -->
+                    ================================================= -->
                     @foreach (var post in Model.Posts)
                     {
 

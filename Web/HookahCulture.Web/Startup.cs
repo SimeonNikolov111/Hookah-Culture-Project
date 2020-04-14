@@ -48,6 +48,8 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
