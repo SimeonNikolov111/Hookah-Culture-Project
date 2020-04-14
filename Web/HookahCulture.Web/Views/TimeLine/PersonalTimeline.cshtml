@@ -2,24 +2,24 @@
 @model HookahCulture.Web.ViewModels.PersonalTimeline.PersonalTimelineInputViewModel;
 @inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
 
-@{ var currentUser = await this.userManager.GetUserAsync(this.User);}
+@{ var currentUser = await this.userManager.GetUserAsync(this.User);
+    string profilePictureLocation = "~/images/ProfilePictures/" + currentUser.ProfilePicturePath;
+}
 
 <!DOCTYPE html>
 <html lang="en">
 <body>
     <div class="container">
-
         <!-- Timeline
         ================================================= -->
         <div class="timeline">
             <div class="timeline-cover">
-
                 <!--Timeline Menu for Large Screens-->
                 <div class="timeline-nav-bar hidden-sm hidden-xs">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="profile-info">
-                                <img src="http://placehold.it/300x300" alt="" class="img-responsive profile-photo" />
+                                <img src=@profilePictureLocation asp-append-version="true" alt="" class="img-responsive profile-photo" />
                                 <h3>@currentUser.FirstName @currentUser.LastName</h3>
                                 <p class="text-muted">Creative Director</p>
                             </div>
@@ -63,7 +63,7 @@
                     <div class="col-md-7">
 
                         <!-- Post Create Box
-                        ================================================= -->
+                ================================================= -->
 
                         <form enctype="multipart/form-data" class="create-post" asp-controller="Post" asp-action="Create">
                             <div class="row">
@@ -81,9 +81,8 @@
                             </div>
                             <button type="submit" asp-controller="Post" asp-action="Create" formmethod="post" class="btn btn-primary pull-right">Publish</button>
                         </form><!-- Post Create Box End-->
-
                         <!-- Post Content
-                        ================================================= -->
+                ================================================= -->
                         <div class="post-content">
 
                             <!--Post Date-->
@@ -97,7 +96,6 @@
 
                             @foreach (var post in Model.Posts)
                             {
-
                                 var photoPath = "~/images/" + post.ImagePath;
 
                                 <div class="post-content">
@@ -157,13 +155,26 @@
                 </div>
             </div>
 
+            <form enctype="multipart/form-data" class="create-post" asp-controller="Timeline" asp-action="UploadProfilePicture">
+                <div class="row">
+                    <div class="col-md-7 col-sm-7">
+                    </div>
+                    <div class="col-md-5 col-sm-5">
+                        <div class="tools">
+                            <input asp-for="PostCreationPictureUpload" />
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" asp-controller="Timeline" asp-action="UploadProfilePicture" formmethod="post" class="btn btn-primary pull-right">Publish</button>
+            </form>
+
             <!--preloader-->
             <div id="spinner-wrapper">
                 <div class="spinner"></div>
             </div>
 
             <!-- Scripts
-            ================================================= -->
+    ================================================= -->
             <script src="js/jquery-3.1.1.min.js"></script>
             <script src="js/bootstrap.min.js"></script>
             <script src="js/jquery.sticky-kit.min.js"></script>

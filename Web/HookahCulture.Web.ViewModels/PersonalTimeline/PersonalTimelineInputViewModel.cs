@@ -1,7 +1,12 @@
-﻿using HookahCulture.Web.ViewModels.Home;
+﻿using AutoMapper;
+using HookahCulture.Data.Models;
+using HookahCulture.Services.Mapping;
+using HookahCulture.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace HookahCulture.Web.ViewModels.PersonalTimeline

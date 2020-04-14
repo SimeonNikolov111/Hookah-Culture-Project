@@ -22,6 +22,10 @@ namespace HookahCulture.Data.Models
 
         public string LastName { get; set; }
 
+        public string ProfilePicturePath { get; set; }
+
+        public string ProfileCoverPath { get; set; }
+
         // Audit info
         public DateTime CreatedOn { get; set; }
 
