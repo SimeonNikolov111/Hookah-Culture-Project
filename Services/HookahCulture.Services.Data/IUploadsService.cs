@@ -9,5 +9,7 @@ namespace HookahCulture.Services.Data
     public interface IUploadsService
     {
         Task UploadProfilePicture(ApplicationUser user, string uniqueFileName);
+
+        Task UploadCoverPhoto(ApplicationUser user, string uniqueFileName);
     }
 }

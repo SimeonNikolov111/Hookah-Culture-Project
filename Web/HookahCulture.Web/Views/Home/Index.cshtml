@@ -3,7 +3,9 @@
 @model HookahCulture.Web.ViewModels.Home.IndexViewModel
 @inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
 
-@{ var currentUser = await this.userManager.GetUserAsync(this.User);}
+@{ var currentUser = await this.userManager.GetUserAsync(this.User);
+    string profilePictureLocation = "~/images/ProfilePictures/" + currentUser.ProfilePicturePath;
+}
 
 
 <!DOCTYPE html>
@@ -16,7 +18,7 @@
                 ================================================= -->
                 <div class="col-md-3 static">
                     <div class="profile-card">
-                        <img src="http://placehold.it/300x300" alt="user" class="profile-photo" />
+                        <img src="@profilePictureLocation" asp-append-version="true" alt="user" class="profile-photo" />
                         <h5><a href="/Timeline/PersonalTimeLine" class="text-white">@currentUser.FirstName @currentUser.LastName</a></h5>
                         <a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1,299 followers</a>
                     </div><!--profile card ends-->
@@ -73,10 +75,10 @@
 
                         <div class="post-content">
                             <div class="post-container">
-                                <img src="http://placehold.it/300x300" alt="user" class="profile-photo-md pull-left" />
+                                <img src="~/images/ProfilePictures/@post.User.ProfilePicturePath" asp-append-version="true" alt="user" class="profile-photo-md pull-left" />
                                 <div class="post-detail">
                                     <div class="user-info">
-                                        <h5><a href="timeline.html" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following">following</span></h5>
+                                        <h5><a href="/Timeline/PersonalTimeLine" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following">following</span></h5>
                                         <p class="text-muted">Post published at: @post.CreatedOn</p>
                                     </div>
                                     <div class="reaction">
@@ -107,7 +109,7 @@
                                         @foreach (var comment in post.Comments)
                                         {
                                             <div class="post-comment">
-                                                <img src="http://placehold.it/300x300" alt="" class="profile-photo-sm" />
+                                                <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" alt="" class="profile-photo-sm" />
                                                 <p id="returnTextHere"><a href="timeline.html" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
                                             </div>
                                         }

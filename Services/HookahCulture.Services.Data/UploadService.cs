@@ -21,5 +21,11 @@ namespace HookahCulture.Services.Data
             user.ProfilePicturePath = uniqueFileName;
             await this.dbContext.SaveChangesAsync();
         }
+
+        public async Task UploadCoverPhoto(ApplicationUser user, string uniqueFileName)
+        {
+            user.ProfileCoverPath = uniqueFileName;
+            await this.dbContext.SaveChangesAsync();
+        }
     }
 }
