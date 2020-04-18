@@ -23,25 +23,29 @@ namespace HookahCulture.Web.Controllers
         private readonly IPostsService postsService;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly IUploadsService uploadsService;
+        private readonly ApplicationDbContext dbContext;
 
-        public TimelineController(UserManager<ApplicationUser> userManager, IPostsService postsService, IWebHostEnvironment hostingEnvironment, IUploadsService uploadsService)
+        public TimelineController(UserManager<ApplicationUser> userManager, IPostsService postsService, IWebHostEnvironment hostingEnvironment, IUploadsService uploadsService, ApplicationDbContext dbContext)
         {
             this.userManager = userManager;
             this.postsService = postsService;
             this.hostingEnvironment = hostingEnvironment;
             this.uploadsService = uploadsService;
+            this.dbContext = dbContext;
         }
 
-        public IActionResult PersonalTimeLine(int page = 1)
+        public IActionResult PersonalTimeline(string timelineId, int page = 1)
         {
             var viewModel = new PersonalTimelineInputViewModel();
-            var userId = this.userManager.GetUserId(this.User);
+            var user = this.dbContext.Users.Where(u => u.TimelineId == timelineId).FirstOrDefault();
 
-            var posts = this.postsService.GetAllPostsForSpecificUserTimeLine<IndexPostViewModel>(userId, ItemsPerPage, (page - 1) * ItemsPerPage);
+            viewModel.User = user;
+
+            var posts = this.postsService.GetAllPostsForSpecificUserTimeLine<IndexPostViewModel>(user.Id, ItemsPerPage, (page - 1) * ItemsPerPage);
 
             viewModel.Posts = posts;
 
-            int count = this.postsService.GetCountOfPostsForSpecificUser(userId);
+            int count = this.postsService.GetCountOfPostsForSpecificUser(user.Id);
             viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
             viewModel.CurrentPage = page;
 
@@ -63,7 +67,7 @@ namespace HookahCulture.Web.Controllers
 
             await this.uploadsService.UploadProfilePicture(user, uniqueFileName);
 
-            return this.Redirect("/Timeline/PersonalTimeLine");
+            return this.Redirect($"/Timeline/PersonalTimeLine?timelineId={user.TimelineId}");
         }
 
         public async Task<IActionResult> UploadCoverPhoto(PersonalTimelineInputViewModel model)
@@ -81,7 +85,7 @@ namespace HookahCulture.Web.Controllers
 
             await this.uploadsService.UploadCoverPhoto(user, uniqueFileName);
 
-            return this.Redirect("/Timeline/PersonalTimeLine");
+            return this.Redirect($"/Timeline/PersonalTimeLine?timelineId={user.TimelineId}");
         }
     }
 }

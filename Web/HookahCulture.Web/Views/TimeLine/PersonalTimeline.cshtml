@@ -2,15 +2,14 @@
 @model HookahCulture.Web.ViewModels.PersonalTimeline.PersonalTimelineInputViewModel;
 @inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
 
-@{ var currentUser = await this.userManager.GetUserAsync(this.User);
-    string profilePictureLocation = "~/images/ProfilePictures/" + currentUser.ProfilePicturePath;
-    string coverPhotoLocation = "~/images/CoverPhotos/" + currentUser.ProfileCoverPath;
+@{
+    string profilePictureLocation = "~/images/ProfilePictures/" + Model.User.ProfilePicturePath;
+    string coverPhotoLocation = "~/images/CoverPhotos/" + Model.User.ProfileCoverPath;
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <body>
-    
     <div class="container">
         <!-- Timeline
         ================================================= -->
@@ -23,7 +22,7 @@
                         <div class="col-md-3">
                             <div class="profile-info">
                                 <img src=@profilePictureLocation asp-append-version="true" alt="" class="img-responsive profile-photo" />
-                                <h3>@currentUser.FirstName @currentUser.LastName</h3>
+                                <h3>@Model.User.FirstName @Model.User.LastName</h3>
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -43,45 +42,58 @@
                 <!--Timeline Menu for Large Screens End-->
             </div>
 
-            <form enctype="multipart/form-data" class="create-post" asp-controller="Timeline">
-                <button type="submit" asp-controller="Timeline" asp-action="UploadCoverPhoto" formmethod="post" class="btn btn-primary pull-right">
-                    Upload Cover Photo
-                    <input asp-for="CoverPhoto" />
-                </button>
-                <button type="submit" asp-controller="Timeline" asp-action="UploadProfilePicture" formmethod="post" class="btn btn-primary pull-right">
-                    Upload Profile Picture
-                    <input asp-for="ProfilePicture" />
-                </button>
-            </form>
-
+            @if (Model.User.Id == this.userManager.GetUserId(this.User))
+            {
+                <form enctype="multipart/form-data" class="create-post" asp-controller="Timeline">
+                    <button type="submit" asp-controller="Timeline" asp-action="UploadCoverPhoto" formmethod="post" class="btn btn-primary pull-right">
+                        Upload Cover Photo
+                        <input asp-for="CoverPhoto" />
+                    </button>
+                    <button type="submit" asp-controller="Timeline" asp-action="UploadProfilePicture" formmethod="post" class="btn btn-primary pull-right">
+                        Upload Profile Picture
+                        <input asp-for="ProfilePicture" />
+                    </button>
+                </form>
+            }
             <div id="page-contents">
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-7">
                         <!-- Post Create Box
-                ================================================= -->
-                        <form enctype="multipart/form-data" class="create-post" asp-controller="Post" asp-action="Create">
-                            <div class="row">
-                                <div class="col-md-7 col-sm-7">
-                                    <div class="form-group">
-                                        <img src="@profilePictureLocation" asp-append-version="true" alt="" class="profile-photo-md" />
-                                        <textarea name="text" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
+                        ================================================= -->
+                        @if (Model.User.Id == this.userManager.GetUserId(this.User))
+                        {
+                            <form enctype="multipart/form-data" class="create-post" asp-controller="Post" asp-action="Create">
+                                <div class="row">
+                                    <div class="col-md-7 col-sm-7">
+                                        <div class="form-group">
+                                            <img src="@profilePictureLocation" asp-append-version="true" alt="" class="profile-photo-md" />
+                                            <textarea name="text" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 col-sm-5">
+                                        <div class="tools">
+                                            <input asp-for="PostCreationPictureUpload" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-5 col-sm-5">
-                                    <div class="tools">
-                                        <input asp-for="PostCreationPictureUpload" />
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" asp-controller="Post" asp-action="Create" formmethod="post" class="btn btn-primary pull-right">Publish</button>
-                        </form><!-- Post Create Box End-->
+                                <button type="submit" asp-controller="Post" asp-action="Create" formmethod="post" class="btn btn-primary pull-right">Publish</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p>
+                                &nbsp;
+                                &nbsp;
+                            </p>
+                        }
+                        <!-- Post Create Box End-->
                         <!-- Post Content
-                ================================================= -->
+                        ================================================= -->
                         <div class="post-content">
                             <!--Post Date-->
                             <div class="post-date hidden-xs hidden-sm">
-                                <h5>@currentUser.FirstName</h5>
+                                <h5>@Model.User.FirstName</h5>
                                 @foreach (var post in Model.Posts)
                                 {
                                     <p class="text-grey">@post.CreatedOn.ToShortDateString()</p>
@@ -130,7 +142,7 @@
                                                 {
                                                     <div class="post-comment">
                                                         <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" asp-append-version="true" alt="" class="profile-photo-sm" />
-                                                        <p id="returnTextHere"><a href="timeline.html" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
+                                                        <p id="returnTextHere"><a href="/Timeline/PersonalTimeline?timelineId=@comment.User.TimelineId" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
                                                     </div>
                                                 }
                                             </div>
@@ -163,6 +175,7 @@
                         <li class="page-item">
                             <a class="page-link"
                                asp-route="routeWithPaging"
+                               asp-route-timelineId="@Model.User.TimelineId"
                                asp-route-page="@(this.Model.CurrentPage - 1)">Previous</a>
                         </li>
                     }
@@ -172,6 +185,7 @@
                         var active = i == this.Model.CurrentPage ? "active" : string.Empty;
                         <li class="page-item @active">
                             <a class="page-link"
+                               asp-route-timelineId="@Model.User.TimelineId"
                                asp-route-page="@i">@i</a>
                         </li>
                     }
@@ -187,6 +201,7 @@
                         <li class="page-item">
                             <a class="page-link"
                                asp-route="routeWithPaging"
+                               asp-route-timelineId="@Model.User.TimelineId"
                                asp-route-page="@(this.Model.CurrentPage + 1)">Next</a>
                         </li>
                     }
@@ -199,7 +214,7 @@
             </div>
 
             <!-- Scripts
-    ================================================= -->
+            ================================================= -->
             <script src="js/jquery-3.1.1.min.js"></script>
             <script src="js/bootstrap.min.js"></script>
             <script src="js/jquery.sticky-kit.min.js"></script>

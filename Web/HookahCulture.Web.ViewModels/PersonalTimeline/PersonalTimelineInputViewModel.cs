@@ -13,6 +13,8 @@ namespace HookahCulture.Web.ViewModels.PersonalTimeline
 {
     public class PersonalTimelineInputViewModel
     {
+        public ApplicationUser User { get; set; }
+
         public IEnumerable<IndexPostViewModel> Posts { get; set; }
 
         public int PagesCount { get; set; }

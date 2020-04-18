@@ -13,6 +13,7 @@ namespace HookahCulture.Data.Models
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid().ToString();
+            this.TimelineId = Guid.NewGuid().ToString();
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
@@ -25,6 +26,8 @@ namespace HookahCulture.Data.Models
         public string ProfilePicturePath { get; set; }
 
         public string ProfileCoverPath { get; set; }
+
+        public string TimelineId { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
