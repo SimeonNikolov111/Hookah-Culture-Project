@@ -10,10 +10,12 @@ namespace HookahCulture.Services.Data
     {
         IEnumerable<T> GetAllPosts<T>(int? take = 5, int skip = 0);
 
-        IEnumerable<T> GetAllPostsForSpecificUserTimeLine<T>(string userId);
+        IEnumerable<T> GetAllPostsForSpecificUserTimeLine<T>(string userId, int? take = 5, int skip = 0);
 
         void Create(string text, string imageUrl, string userId);
 
         int GetCountOfPosts();
+
+        int GetCountOfPostsForSpecificUser(string userId);
     }
 }

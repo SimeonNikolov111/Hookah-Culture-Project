@@ -17,6 +17,8 @@ namespace HookahCulture.Web.Controllers
 {
     public class TimelineController : Controller
     {
+        private const int ItemsPerPage = 5;
+
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IPostsService postsService;
         private readonly IWebHostEnvironment hostingEnvironment;
@@ -30,16 +32,18 @@ namespace HookahCulture.Web.Controllers
             this.uploadsService = uploadsService;
         }
 
-        public IActionResult PersonalTimeLine()
+        public IActionResult PersonalTimeLine(int page = 1)
         {
+            var viewModel = new PersonalTimelineInputViewModel();
             var userId = this.userManager.GetUserId(this.User);
 
-            var posts = this.postsService.GetAllPostsForSpecificUserTimeLine<IndexPostViewModel>(userId);
+            var posts = this.postsService.GetAllPostsForSpecificUserTimeLine<IndexPostViewModel>(userId, ItemsPerPage, (page - 1) * ItemsPerPage);
 
-            var viewModel = new PersonalTimelineInputViewModel()
-            {
-                Posts = posts,
-            };
+            viewModel.Posts = posts;
+
+            int count = this.postsService.GetCountOfPostsForSpecificUser(userId);
+            viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            viewModel.CurrentPage = page;
 
             return this.View(viewModel);
         }

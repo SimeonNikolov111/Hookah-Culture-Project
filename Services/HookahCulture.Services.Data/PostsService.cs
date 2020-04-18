@@ -36,9 +36,14 @@ namespace HookahCulture.Services.Data
             return posts.To<T>().ToList();
         }
 
-        public IEnumerable<T> GetAllPostsForSpecificUserTimeLine<T>(string userId)
+        public IEnumerable<T> GetAllPostsForSpecificUserTimeLine<T>(string userId, int? take = 5, int skip = 0)
         {
-            var posts = this.dbContext.Posts.Where(p => p.UserId == userId).OrderByDescending(p => p.CreatedOn);
+            var posts = this.dbContext.Posts.Where(p => p.UserId == userId).OrderByDescending(p => p.CreatedOn).Skip(skip);
+
+            if (take.HasValue)
+            {
+                posts = posts.Take(take.Value);
+            }
 
             return posts.To<T>().ToList();
         }
@@ -62,6 +67,11 @@ namespace HookahCulture.Services.Data
         public int GetCountOfPosts()
         {
             return this.dbContext.Posts.Count();
+        }
+
+        public int GetCountOfPostsForSpecificUser(string userId)
+        {
+            return this.dbContext.Posts.Where(p => p.UserId == userId).Count();
         }
     }
 }
