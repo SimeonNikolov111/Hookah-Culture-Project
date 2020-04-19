@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace HookahCulture.Web.Hub
 {
     using System.Threading.Tasks;
@@ -13,11 +14,11 @@ namespace HookahCulture.Web.Hub
     [Authorize]
     public class ChatHub : Hub
     {
-        public async Task Send(string message)
+        public async Task Send(string name, string message, string profilePicturePath)
         {
             await this.Clients.All.SendAsync(
                 "NewMessage",
-                new Message { User = this.Context.User.Identity.Name, Text = message, });
+                new Message { Name = name, Text = message, ProfilePicturePath = profilePicturePath });
         }
     }
 }

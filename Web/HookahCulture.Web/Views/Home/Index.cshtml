@@ -20,7 +20,7 @@
                     <div class="profile-card">
                         <img src="@profilePictureLocation" asp-append-version="true" alt="user" class="profile-photo" />
                         <h5><a href="/Timeline/PersonalTimeline?timelineId=@currentUser.TimelineId" class="text-white">@currentUser.FirstName @currentUser.LastName</a></h5>
-                        <a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1,299 followers</a>
+                        <a href="#" class="text-white"><i></i></a>
                     </div><!--profile card ends-->
                     <ul class="nav-news-feed">
                         <li><i class="icon ion-ios-paper"></i><div><a href="/Timeline/PersonalTimeline?timelineId=@currentUser.TimelineId">My Newsfeed</a></div></li>
@@ -31,7 +31,7 @@
                         <li><i class="icon ion-ios-videocam"></i><div><a href="newsfeed-videos.html">Videos</a></div></li>
                     </ul><!--news-feed links ends-->
                     <div id="chat-block">
-                        <div class="title">Chat online</div>
+                        <a class="title" href="/Chat/Chat">Chat online</a>
                         <ul class="online-users list-inline">
                             <li><a href="newsfeed-messages.html" title="Linda Lohan"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
                             <li><a href="newsfeed-messages.html" title="Sophia Lee"><img src="http://placehold.it/300x300" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>

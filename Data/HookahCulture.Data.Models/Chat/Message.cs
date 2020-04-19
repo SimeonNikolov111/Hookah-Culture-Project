@@ -6,8 +6,10 @@ namespace HookahCulture.Data.Models.Chat
 {
     public class Message
     {
-        public string User { get; set; }
+        public string Name { get; set; }
 
         public string Text { get; set; }
+
+        public string ProfilePicturePath { get; set; }
     }
 }

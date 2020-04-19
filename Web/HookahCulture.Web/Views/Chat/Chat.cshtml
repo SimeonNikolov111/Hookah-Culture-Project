@@ -1,19 +1,76 @@
-﻿@{
+﻿@using HookahCulture.Data.Models;
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
+
+@{
+    var currentUser = await this.userManager.GetUserAsync(this.User);
     this.ViewBag.Title = "Chat";
 }
 
 <h1>@this.ViewBag.Title</h1>
 
-<div class="container">
-    <div id="message-holder" class="mt-3 d-flex justify-content-start">
-        <h4>Message</h4>
-        <input class="w-75 ml-4 pl-3" type="text" id="messageInput" placeholder="Message..." />
-        <button id="sendButton" class="ml-4 btn btn-dark btn-lg">Send</button>
-    </div>
-    <hr style="height: 5px;" class="bg-dark" />
-    <div id="messagesList" style="font-size: 28px;">
+<div id="page-contents">
+    <div class="container">
+        <div class="row">
+
+            <!-- Newsfeed Common Side Bar Left
+            ================================================= -->
+            <div class="col-md-3 static">
+                <div class="profile-card">
+                    <img src="~/images/ProfilePictures/@currentUser.ProfilePicturePath" alt="user" class="profile-photo" />
+                    <h5><a href="timeline.html" class="text-white">@currentUser.FirstName @currentUser.LastName</a></h5>
+                    <a href="#" class="text-white"><i></i></a>
+                </div><!--profile card ends-->
+                <ul class="nav-news-feed">
+                    <li><i class="icon ion-ios-paper"></i><div><a href="newsfeed.html">My Newsfeed</a></div></li>
+                    <li><i class="icon ion-ios-people"></i><div><a href="newsfeed-people-nearby.html">People Nearby</a></div></li>
+                    <li><i class="icon ion-ios-people-outline"></i><div><a href="newsfeed-friends.html">Friends</a></div></li>
+                    <li><i class="icon ion-chatboxes"></i><div><a href="newsfeed-messages.html">Messages</a></div></li>
+                    <li><i class="icon ion-images"></i><div><a href="newsfeed-images.html">Images</a></div></li>
+                    <li><i class="icon ion-ios-videocam"></i><div><a href="newsfeed-videos.html">Videos</a></div></li>
+                </ul><!--news-feed links ends-->
+            </div>
+
+            <div class="col-md-7">
+
+                <!-- Chat Room
+                ================================================= -->
+                <div class="chat-room">
+                    <div class="row">
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-7">
+                            <!--Chat Messages in Right-->
+                            <div class="tab-content scrollbar-wrapper wrapper scrollbar-outer">
+                                <div class="tab-pane active" id="contact-1">
+                                    <div class="chat-body">
+                                        <ul class="chat-message">
+                                            <li class="left" id="messagesList"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div><!--Chat Messages in Right End-->
+
+                            <div id="message-holder" class="send-message">
+                                <input type="hidden" id="displayname" value="@currentUser.FirstName @currentUser.LastName" />
+                                <input class="form-control" type="text" id="messageInput" placeholder="Type your message" />
+                                <input type="hidden" id="profilePicturePath" value="@currentUser.ProfilePicturePath" />
+                                <span class="input-group-btn">
+                                    <button id="sendButton" onclick="document.getElementById('messageInput').value = ''" name="sendButton" class="btn btn-default">Send</button>
+                                </span>
+                            </div>
+                            <hr style="height: 5px;" class="bg-dark" />
+                            <div id="messagesList" style="font-size: 28px;">
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
 
 @section Scripts {
     <script>
@@ -23,12 +80,23 @@
                 .build();
         connection.on("NewMessage",
             function (message) {
-                var chatInfo = `<div>[${message.user}] ${escapeHtml(message.text)}</div>`;
+                var chatInfo = `<li class="left">
+                                 <img src="../images/ProfilePictures/${escapeHtml(message.profilePicturePath)}" alt="user" height="40" width="40" class="profile-photo-sm pull-left" />
+                                  <div class="chat-item">
+                                    <div class="chat-item-header">
+                                     <h5>${escapeHtml(message.name)}</h5>
+                                     <small class="text-muted">3 days ago</small>
+                                    </div>
+                                   <p>${escapeHtml(message.text)}</p>
+                                   </div>
+                                   </li>`;
                 $("#messagesList").append(chatInfo);
             });
-        $("#sendButton").click(function() {
+        $("#sendButton").click(function () {
+            var fullname = $("#displayname").val();
             var message = $("#messageInput").val();
-            connection.invoke("Send", message);
+            var profilePicturePath = $("#profilePicturePath").val();
+            connection.invoke("Send", fullname, message, profilePicturePath);
         });
         connection.start().catch(function (err) {
             return console.error(err.toString());
@@ -41,5 +109,13 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
         }
+
+        $(document).ready(function () {
+            $("#messageInput").keypress(function (e) {
+                if (e.keyCode == 13)
+                    $("#sendButton").click();
+            });
+        });
+
     </script>
 }
