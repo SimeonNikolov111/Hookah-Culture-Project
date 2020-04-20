@@ -26,7 +26,7 @@ namespace HookahCulture.Services.Data
 
         public IEnumerable<T> GetAllPosts<T>(int? take = 5, int skip = 0)
         {
-            var posts = this.dbContext.Posts.OrderByDescending(p => p.CreatedOn).Skip(skip);
+            var posts = this.dbContext.Posts.Where(p => p.IsDeleted == false).OrderByDescending(p => p.CreatedOn).Skip(skip);
 
             if (take.HasValue)
             {
@@ -38,7 +38,7 @@ namespace HookahCulture.Services.Data
 
         public IEnumerable<T> GetAllPostsForSpecificUserTimeLine<T>(string userId, int? take = 5, int skip = 0)
         {
-            var posts = this.dbContext.Posts.Where(p => p.UserId == userId).OrderByDescending(p => p.CreatedOn).Skip(skip);
+            var posts = this.dbContext.Posts.Where(p => p.UserId == userId && p.IsDeleted == false).OrderByDescending(p => p.CreatedOn).Skip(skip);
 
             if (take.HasValue)
             {
@@ -71,7 +71,7 @@ namespace HookahCulture.Services.Data
 
         public int GetCountOfPostsForSpecificUser(string userId)
         {
-            return this.dbContext.Posts.Where(p => p.UserId == userId).Count();
+            return this.dbContext.Posts.Where(p => p.UserId == userId && p.IsDeleted == false).Count();
         }
     }
 }

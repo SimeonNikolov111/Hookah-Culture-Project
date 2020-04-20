@@ -437,14 +437,14 @@ namespace HookahCulture.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("HookahCulture.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("HookahCulture.Data.Models.Post", b =>
                 {
                     b.HasOne("HookahCulture.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -466,7 +466,7 @@ namespace HookahCulture.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("HookahCulture.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Votes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

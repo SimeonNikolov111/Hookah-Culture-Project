@@ -112,9 +112,9 @@
             app.UseEndpoints(
                 endpoints =>
                     {
+                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("routeWithPaging", "{controller=Home}/{action=Index}/", new { controller = "Home", action = "Index"});
                         endpoints.MapControllerRoute("personalTimeline", "{controller=Timeline}/{action=PersonalTimeline}/", new { controler = "Timeline", action = "PersonalTimeline" });
-                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();
                         endpoints.MapHub<ChatHub>("/chat");
