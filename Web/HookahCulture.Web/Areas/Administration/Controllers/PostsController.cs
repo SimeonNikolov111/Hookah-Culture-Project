@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HookahCulture.Data;
 using HookahCulture.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HookahCulture.Web.Areas.Administration.Controllers
 {
     [Area("Administration")]
+    [Authorize(Roles = "Administrator")]
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
