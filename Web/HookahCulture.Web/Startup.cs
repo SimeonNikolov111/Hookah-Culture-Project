@@ -66,9 +66,11 @@
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<LoginPageInfoService>();
             services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<IGalleryVotesService, GalleryVotesService>();
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<IUploadsService, UploadService>();
             services.AddTransient<IRolesService, RoleService>();
+            services.AddTransient<IImagesService, ImageService>();
             services.AddSignalR();
         }
 
@@ -92,6 +94,7 @@
 
             if (env.IsDevelopment())
             {
+                //app.UseStatusCodePagesWithRedirects("Home/Error/{0}");
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }

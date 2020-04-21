@@ -43,10 +43,20 @@
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+
+        [Route("/Home/Error/{statusCode}")]
+        public IActionResult Error(int statusCode)
         {
-            return this.View(
-                new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
+            if (statusCode == 404)
+            {
+                return this.View("NotFound");
+            }
+
+            return this.View("NotFound");
+
+
+            //return this.View(
+            //    new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
     }
 }

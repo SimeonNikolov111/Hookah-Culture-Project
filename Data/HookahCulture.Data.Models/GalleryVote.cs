@@ -6,11 +6,11 @@ using System.Text;
 
 namespace HookahCulture.Data.Models
 {
-    public class Vote : BaseModel<int>
+    public class GalleryVote : BaseModel<int>
     {
-        public int PostId { get; set; }
+        public int ImageId { get; set; }
 
-        public virtual Post Post { get; set; }
+        public virtual Image Image { get; set; }
 
         [Required]
         public string UserId { get; set; }

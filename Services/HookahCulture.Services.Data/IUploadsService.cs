@@ -11,5 +11,7 @@ namespace HookahCulture.Services.Data
         Task UploadProfilePicture(ApplicationUser user, string uniqueFileName);
 
         Task UploadCoverPhoto(ApplicationUser user, string uniqueFileName);
+
+        void UploadImageInGallery(ApplicationUser user, string uniqueFileName);
     }
 }

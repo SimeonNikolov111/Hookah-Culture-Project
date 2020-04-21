@@ -27,5 +27,19 @@ namespace HookahCulture.Services.Data
             user.ProfileCoverPath = uniqueFileName;
             await this.dbContext.SaveChangesAsync();
         }
+
+        public void UploadImageInGallery(ApplicationUser user, string uniqueFileName)
+        {
+            var image = new Image()
+            {
+                UserWhoUploaded = user.FirstName + " " + user.LastName,
+                UserTimeLineId = user.TimelineId,
+                ImagePath = uniqueFileName,
+                IsApproved = false,
+            };
+
+            this.dbContext.Images.Add(image);
+            this.dbContext.SaveChanges();
+        }
     }
 }
