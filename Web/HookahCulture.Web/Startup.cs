@@ -68,7 +68,7 @@
             services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<IUploadsService, UploadService>();
-            services.AddTransient<IAddUserToRoleService, AddUserToRoleService>();
+            services.AddTransient<IRolesService, RoleService>();
             services.AddSignalR();
         }
 

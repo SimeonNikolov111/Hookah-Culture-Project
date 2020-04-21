@@ -5,8 +5,10 @@ using System.Text;
 
 namespace HookahCulture.Services.Data
 {
-    public interface IAddUserToRoleService
+    public interface IRolesService
     {
         ApplicationUser GetUser(string userId);
+
+        ICollection<ApplicationUser> GetAllUsers();
     }
 }

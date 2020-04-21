@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HookahCulture.Web.ViewModels.Administration
 {
-    public class AddRoleToUserViewModel
+    public class RemoveRoleFromUserViewModel
     {
         public string RoleName { get; set; }
 

@@ -8,6 +8,8 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using System.Linq;
     using System.Threading.Tasks;
 
 
@@ -16,13 +18,13 @@
     public class AdministrationController : BaseController
     {
         private readonly RoleManager<ApplicationRole> roleManager;
-        private readonly IAddUserToRoleService addUserToRoleService;
+        private readonly IRolesService roleService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public AdministrationController(RoleManager<ApplicationRole> roleManager, IAddUserToRoleService addUserToRoleService, UserManager<ApplicationUser> userManager)
+        public AdministrationController(RoleManager<ApplicationRole> roleManager, IRolesService roleService, UserManager<ApplicationUser> userManager)
         {
             this.roleManager = roleManager;
-            this.addUserToRoleService = addUserToRoleService;
+            this.roleService = roleService;
             this.userManager = userManager;
         }
 
@@ -66,18 +68,54 @@
         [Authorize(Roles = "Administrator")]
         public IActionResult AddRoleToUser()
         {
-            return this.View();
+            var users = this.userManager.Users.Include(x => x.Roles).ToList();
+            var roles = this.roleManager.Roles.ToList();
+
+            var viewModel = new AddRoleToUserViewModel()
+            {
+                Users = users,
+                Roles = roles,
+            };
+
+            return this.View(viewModel);
         }
 
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddRoleToUser(AddRoleToUserViewModel viewModel)
         {
-            var user = this.addUserToRoleService.GetUser(viewModel.UserId);
+            var user = this.roleService.GetUser(viewModel.UserId);
 
             await this.userManager.AddToRoleAsync(user, viewModel.RoleName);
 
-            return this.Redirect("/Home/Index");
+            return this.Redirect("/Administration/Administration/AddRoleToUser");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public IActionResult RemoveRoleFromUser()
+        {
+            var users = this.userManager.Users.Include(x => x.Roles).ToList();
+            var roles = this.roleManager.Roles.ToList();
+
+            var viewModel = new RemoveRoleFromUserViewModel()
+            {
+                Users = users,
+                Roles = roles,
+            };
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> RemoveRoleFromUser(RemoveRoleFromUserViewModel viewModel)
+        {
+            var user = this.roleService.GetUser(viewModel.UserId);
+
+            await this.userManager.RemoveFromRoleAsync(user, viewModel.RoleName);
+
+            return this.Redirect("/Administration/Administration/RemoveRoleFromUser");
         }
     }
 }

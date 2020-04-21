@@ -10,7 +10,7 @@
     {
         private static readonly RoleManager<ApplicationRole> roleManager;
         private static UserManager<ApplicationUser> addUserToRoleService;
-        private static IAddUserToRoleService userManager;
+        private static IRolesService userManager;
         private readonly ISettingsService settingsService;
 
         public DashboardController(ISettingsService settingsService)

@@ -1,10 +1,10 @@
-﻿@model HookahCulture.Web.ViewModels.Administration.AddRoleToUserViewModel
+﻿@model HookahCulture.Web.ViewModels.Administration.RemoveRoleFromUserViewModel
 
 @{
-    this.ViewBag.Title = "Add role to user!";
+    this.ViewBag.Title = "Remove Role From User!";
 }
 
-<h1>Add role to user!</h1>
+<h1>Remove Role From User!</h1>
 
 <div class="row">
     <div class="col-md-12">
@@ -20,7 +20,7 @@
                 <input asp-for="UserId" class="form-control" />
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
-            <button class="btn btn-primary">Add Role to User</button>
+            <button class="btn btn-primary">Remove Role From User</button>
         </form>
     </div>
 </div>
@@ -28,18 +28,18 @@
 <div class="alert alert-danger" role="alert">Roles List:</div>
 @foreach (var role in Model.Roles)
 {
-<div class="alert alert-info" role="alert">
-    <p>Role Name: @role.Name</p>
-    <p>Role Id: @role.Id</p>
-</div>
+    <div class="alert alert-info" role="alert">
+        <p>Role Name: @role.Name</p>
+        <p>Role Id: @role.Id</p>
+    </div>
 }
 
 <div class="alert alert-danger" role="alert">User's Info:</div>
 @foreach (var user in Model.Users)
 {
-<div class="alert alert-info" role="alert">
-    <p>Email: @user.Email</p>
-    <p>UserId: @user.Id</p>
-    <p>Current Roles: @String.Join(", ", user.Roles.Select(r => r.RoleId).ToList())</p>
-</div>
+    <div class="alert alert-info" role="alert">
+        <p>Email: @user.Email</p>
+        <p>UserId: @user.Id</p>
+        <p>Current Roles: @String.Join(", ", user.Roles.Select(r => r.RoleId).ToList())</p>
+    </div>
 }

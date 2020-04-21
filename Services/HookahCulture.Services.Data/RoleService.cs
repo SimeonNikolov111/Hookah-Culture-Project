@@ -4,14 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HookahCulture.Services.Data
 {
-    public class AddUserToRoleService : IAddUserToRoleService
+    public class RoleService : IRolesService
     {
         private readonly ApplicationDbContext applicationDbContext;
 
-        public AddUserToRoleService(ApplicationDbContext applicationDbContext)
+        public RoleService(ApplicationDbContext applicationDbContext)
         {
             this.applicationDbContext = applicationDbContext;
         }
@@ -21,6 +22,13 @@ namespace HookahCulture.Services.Data
             var user = this.applicationDbContext.Users.Where(u => u.Id == userId).FirstOrDefault();
 
             return user;
+        }
+
+        public ICollection<ApplicationUser> GetAllUsers()
+        {
+            var users = this.applicationDbContext.Users.ToList();
+
+            return users;
         }
     }
 }
