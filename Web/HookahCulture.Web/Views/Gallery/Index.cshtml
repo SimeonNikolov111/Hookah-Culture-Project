@@ -50,23 +50,25 @@
                             </div>
                             <div class="col-md-5 col-sm-5">
                                 <div class="tools">
-                                    <input asp-for="ImageUpload" />
+                                    @*<input asp-for="ImageUpload" />*@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" asp-controller="Gallery" asp-action="UploadImage" formmethod="post" class="btn btn-primary pull-right">Post a picture.</button>
-                    </form><!-- Post Create Box End -->
+                        <button type="submit" asp-controller="Gallery" asp-action="UploadImage" formmethod="post" class="btn btn-primary pull-right">Upload a picture.<input asp-for="ImageUpload" /></button>
+                    </form><!--Post Create Box End-->
+
+                    <div class="alert alert-success" role="alert"> Upload a picture and if it gets approved, it will be posted on our Galley section below!</div>
                     <!-- Media
                     ================================================= -->
+                    <div class="media">
+                        <div class="row js-masonry" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": ".grid-sizer", "percentPosition": true }'>
+                            <div class="grid-sizer col-md-6 col-sm-6"></div>
 
-                    @foreach (var image in Model.Images)
-                    {
-                        <div class="media">
-                            <div class="row js-masonry" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": ".grid-sizer", "percentPosition": true }'>
-                                <div class="grid-sizer col-md-6 col-sm-6"></div>
+                            @foreach (var image in Model.Images)
+                            {
                                 <div class="grid-item col-md-6 col-sm-6">
                                     <div class="media-grid">
-                                        <div class="img-wrapper" data-toggle="modal" data-target=".modal-1">
+                                        <div class="img-wrapper" data-toggle="modal" data-target=".modal-1_@image.Id">
                                             <img src="~/images/Gallery/@image.ImagePath" alt="" class="img-responsive post-image" />
                                         </div>
                                         <div class="media-info">
@@ -75,9 +77,8 @@
                                                 <a class="btn text-red" method="post" onclick="sendVote(@image.Id, false)"><div class="fa fa-thumbs-down" id="downVotes_@image.Id">@image.DownVotes</div></a>
                                             </div>
                                         </div>
-
                                         <!--Popup-->
-                                        <div class="modal fade modal-1" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal fade modal-1_@image.Id" tabindex="-1" role="dialog" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="post-content">
@@ -96,9 +97,9 @@
                                         </div><!--Popup End-->
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
-                    }
+                    </div>
                 </div>
             </div>
         </div>

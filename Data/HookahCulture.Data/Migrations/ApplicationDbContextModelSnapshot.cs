@@ -235,17 +235,11 @@ namespace HookahCulture.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Dislikes")
-                        .HasColumnType("int");
-
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Likes")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -512,7 +506,7 @@ namespace HookahCulture.Data.Migrations
             modelBuilder.Entity("HookahCulture.Data.Models.GalleryVote", b =>
                 {
                     b.HasOne("HookahCulture.Data.Models.Image", "Image")
-                        .WithMany()
+                        .WithMany("GalleryVotes")
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

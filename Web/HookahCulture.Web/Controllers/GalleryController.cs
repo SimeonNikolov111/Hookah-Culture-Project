@@ -42,14 +42,17 @@ namespace HookahCulture.Web.Controllers
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            string uniqueFileName;
+            string uniqueFileName = null;
 
-            string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images/Gallery");
-            uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-            model.ImageUpload.CopyTo(new FileStream(filePath, FileMode.Create));
+            if (model.ImageUpload != null)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images/Gallery");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                model.ImageUpload.CopyTo(new FileStream(filePath, FileMode.Create));
 
-            this.uploadsService.UploadImageInGallery(user, uniqueFileName);
+                this.uploadsService.UploadImageInGallery(user, uniqueFileName);
+            }
 
             return this.Redirect("/Gallery/Index");
         }
