@@ -111,7 +111,7 @@
                                         <div class="post-detail">
                                             <div class="user-info">
                                                 <h5><a href="timeline.html" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following">following</span></h5>
-                                                <p class="text-muted">Post published at: @post.CreatedOn</p>
+                                                <p class="text-muted"> Post published at: <time datetime="@post.CreatedOn.ToString("O")"></time></p>
                                             </div>
                                             <div class="reaction">
                                                 <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)"><div class="icon ion-thumbsup" id="upVotes_@post.Id">@post.UpVotes</div></a>

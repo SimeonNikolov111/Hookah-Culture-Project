@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row">
                 <!-- Newsfeed Common Side Bar Left
-                ================================================= -->
+            ================================================= -->
                 <div class="col-md-3 static">
                     <div class="profile-card">
                         <img src="@profilePictureLocation" asp-append-version="true" alt="user" class="profile-photo" />
@@ -45,7 +45,7 @@
                 <div class="col-md-7">
 
                     <!-- Post Create Box
-                    ================================================= -->
+                ================================================= -->
                     <form enctype="multipart/form-data" class="create-post" asp-controller="Post" asp-action="Create">
                         <div class="row">
                             <div class="col-md-7 col-sm-7">
@@ -63,7 +63,7 @@
                         <button type="submit" asp-controller="Post" asp-action="Create" formmethod="post" class="btn btn-primary pull-right">Publish</button>
                     </form><!-- Post Create Box End-->
                     <!-- Post Content
-                    ================================================= -->
+                ================================================= -->
                     @foreach (var post in Model.Posts)
                     {
 
@@ -75,7 +75,7 @@
                                 <div class="post-detail">
                                     <div class="user-info">
                                         <h5><a href="/Timeline/PersonalTimeLine?timelineId=@post.User.TimelineId" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following">following</span></h5>
-                                        <p class="text-muted">Post published at: @post.CreatedOn</p>
+                                        <p class="text-muted"> Post published at: <time datetime="@post.CreatedOn.ToString("O")"></time></p>
                                     </div>
                                     <div class="reaction">
                                         <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)"><div class="icon ion-thumbsup" id="upVotes_@post.Id">@post.UpVotes</div></a>
@@ -104,10 +104,10 @@
                                     <div id="@post.Id" style="display: none">
                                         @foreach (var comment in post.Comments)
                                         {
-                                            <div class="post-comment">
-                                                <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" alt="" class="profile-photo-sm" />
-                                                <p id="returnTextHere"><a href="/Timeline/PersonalTimeLine?timelineId=@comment.User.TimelineId" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
-                                            </div>
+                                        <div class="post-comment">
+                                            <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" alt="" class="profile-photo-sm" />
+                                            <p id="returnTextHere"><a href="/Timeline/PersonalTimeLine?timelineId=@comment.User.TimelineId" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
+                                        </div>
                                         }
                                     </div>
                                     <div>
@@ -174,7 +174,7 @@
             <div class="spinner"></div>
         </div>
         <!-- Scripts
-        ================================================= -->
+    ================================================= -->
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTMXfmDn0VlqWIyoOxK8997L-amWbUPiQ&callback=initMap"></script>
         <script src="~/js/jquery-3.1.1.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
@@ -182,6 +182,7 @@
         <script src="~/js/jquery.scrollbar.min.js"></script>
         <script src="~/js/script.js"></script>
         <script src="~/js/jquery.form.js"></script>
+        <script src="~/lib/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
 </body>
 </html>
 
@@ -218,6 +219,8 @@
                 document.location.reload(true);
             });
         }
+
+
     </script>
 }
 

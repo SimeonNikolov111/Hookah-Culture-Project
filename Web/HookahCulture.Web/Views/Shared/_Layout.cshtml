@@ -178,13 +178,14 @@
         <script src="~/js/script.js"></script>
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
         <script src="~/js/jquery.form.js"></script>
+        <script src="~/lib/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTMXfmDn0VlqWIyoOxK8997L-amWbUPiQ&callback=initMap"></script>
         <script src="~/js/jquery-3.1.1.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
@@ -193,6 +194,7 @@
         <script src="~/js/script.js"></script>
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
         <script src="~/js/jquery.form.js"></script>
+        <script src="~/lib/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
     </environment>
     @this.RenderSection("Scripts", required: false)
 
