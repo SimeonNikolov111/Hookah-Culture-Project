@@ -10,5 +10,9 @@ namespace HookahCulture.Services.Data
     public interface IImagesService
     {
         IEnumerable<T> GetAllImages<T>();
+
+        IEnumerable<T> GetAllImagesForAdminApproval<T>();
+
+        void GetImageForApproval(int imageId);
     }
 }

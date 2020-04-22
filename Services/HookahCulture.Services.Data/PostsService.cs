@@ -64,6 +64,14 @@ namespace HookahCulture.Services.Data
             this.dbContext.SaveChanges();
         }
 
+        public ICollection<ApplicationUser> GetRecentlyRegisteredUsers()
+        {
+            var users = this.dbContext.Users.OrderByDescending(u => u.CreatedOn).Take(9).ToList();
+
+            return users;
+        }
+
+
         public int GetCountOfPosts()
         {
             return this.dbContext.Posts.Count();

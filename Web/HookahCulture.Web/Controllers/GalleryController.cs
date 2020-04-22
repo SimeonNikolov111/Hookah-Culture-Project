@@ -18,13 +18,15 @@ namespace HookahCulture.Web.Controllers
         private readonly IUploadsService uploadsService;
         private readonly IImagesService imagesService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IPostsService postsService;
 
-        public GalleryController(IWebHostEnvironment hostingEnvironment, IUploadsService uploadsService, IImagesService imagesService, UserManager<ApplicationUser> userManager)
+        public GalleryController(IWebHostEnvironment hostingEnvironment, IUploadsService uploadsService, IImagesService imagesService, UserManager<ApplicationUser> userManager, IPostsService postsService)
         {
             this.hostingEnvironment = hostingEnvironment;
             this.uploadsService = uploadsService;
             this.imagesService = imagesService;
             this.userManager = userManager;
+            this.postsService = postsService;
         }
 
         [HttpGet]
@@ -32,8 +34,10 @@ namespace HookahCulture.Web.Controllers
         {
             var viewModel = new GalleryViewModel();
             var images = this.imagesService.GetAllImages<GalleryImageInputViewModel>().ToList();
+            var recenytlyRegisteredUsers = this.postsService.GetRecentlyRegisteredUsers();
 
             viewModel.Images = images;
+            viewModel.RecentlyRegisteredUsers = recenytlyRegisteredUsers;
 
             return this.View(viewModel);
         }

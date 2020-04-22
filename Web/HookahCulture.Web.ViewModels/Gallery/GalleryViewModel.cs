@@ -11,5 +11,8 @@ namespace HookahCulture.Web.ViewModels.Gallery
         public ICollection<GalleryImageInputViewModel> Images { get; set; }
 
         public IFormFile ImageUpload { get; set; }
+
+        public IEnumerable<ApplicationUser> RecentlyRegisteredUsers { get; set; }
+
     }
 }

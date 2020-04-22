@@ -1,4 +1,5 @@
-﻿using HookahCulture.Web.ViewModels.Home;
+﻿using HookahCulture.Data.Models;
+using HookahCulture.Web.ViewModels.Home;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,5 +18,7 @@ namespace HookahCulture.Services.Data
         int GetCountOfPosts();
 
         int GetCountOfPostsForSpecificUser(string userId);
+
+        ICollection<ApplicationUser> GetRecentlyRegisteredUsers();
     }
 }

@@ -17,5 +17,7 @@
         public int CurrentPage { get; set; }
 
         public IFormFile PostCreationPictureUpload { get; set; }
+
+        public IEnumerable<ApplicationUser> RecentlyRegisteredUsers { get; set; }
     }
 }

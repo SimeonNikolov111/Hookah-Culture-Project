@@ -37,23 +37,7 @@
                 </div>
 
                 <div class="col-md-7">
-
-                    <!-- Post Create Box
-                    ================================================= -->
-                    <form enctype="multipart/form-data" class="upload-image" asp-controller="Gallery" asp-action="UploadImage">
-                        <div class="row">
-                            <div class="col-md-7 col-sm-7">
-                            </div>
-                            <div class="col-md-5 col-sm-5">
-                                <div class="tools">
-                                    @*<input asp-for="ImageUpload" />*@
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" asp-controller="Gallery" asp-action="UploadImage" formmethod="post" class="btn btn-primary pull-right">Upload a picture.<input asp-for="ImageUpload" /></button>
-                    </form><!--Post Create Box End-->
-
-                    <div class="alert alert-success" role="alert"> Upload a picture and if it gets approved, it will be posted on our Galley section below!</div>
+                    <div class="alert alert-success" role="alert"> Pictures waiting for approval: </div>
                     <!-- Media
                     ================================================= -->
                     <div class="media">
@@ -68,11 +52,15 @@
                                             <img src="~/images/Gallery/@image.ImagePath" alt="" class="img-responsive post-image" />
                                         </div>
                                         <div class="media-info">
-                                            <div class="reaction">
-                                                <a class="btn text-green" method="post" onclick="sendVote(@image.Id, true)"><div class="icon ion-thumbsup" id="upVotes_@image.Id">@image.UpVotes</div></a>
-                                                <a class="btn text-red" method="post" onclick="sendVote(@image.Id, false)"><div class="fa fa-thumbs-down" id="downVotes_@image.Id">@image.DownVotes</div></a>
-                                            </div>
                                         </div>
+
+                                        <form class="approve-image" asp-area="Administration" asp-controller="Gallery" asp-action="Approve" method="post">
+                                            <div class="row">
+                                            </div>
+                                            <button type="submit" asp-area="Administration" asp-controller="Gallery" asp-action="Approve" asp-route-imageId="@image.Id" formmethod="post" class="btn btn-primary pull-right">Approve</button>
+                                        </form>
+
+                                        
                                         <!--Popup-->
                                         <div class="modal fade modal-1_@image.Id" tabindex="-1" role="dialog" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
@@ -111,22 +99,3 @@
     <script src="~/js/script.js"></script>
     <script src="~/js/jquery.form.js"></script>
 </body>
-
-@section Scripts{
-    <script>
-        function sendVote(imageId, isUpVote) {
-            var json = { imageId: imageId, isUpVote: isUpVote };
-            $.ajax({
-                url: "/api/GalleryVote",
-                type: "POST",
-                data: JSON.stringify(json),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    $("#upVotes_" + imageId).html(data.upVotes);
-                    $("#downVotes_" + imageId).html(data.downVotes);
-                }
-            });
-        }
-    </script>
-}

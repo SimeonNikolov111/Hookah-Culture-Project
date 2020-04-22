@@ -19,9 +19,25 @@ namespace HookahCulture.Services.Data
 
         public IEnumerable<T> GetAllImages<T>()
         {
+            var images = this.dbContext.Images.Where(i => i.IsApproved == true).To<T>().ToList();
+
+            return images;
+        }
+
+        public IEnumerable<T> GetAllImagesForAdminApproval<T>()
+        {
             var images = this.dbContext.Images.Where(i => i.IsApproved == false).To<T>().ToList();
 
             return images;
+        }
+
+        public void GetImageForApproval(int imageId)
+        {
+            var image = this.dbContext.Images.Where(i => i.Id == imageId).FirstOrDefault();
+
+            image.IsApproved = true;
+
+            this.dbContext.SaveChanges();
         }
     }
 }

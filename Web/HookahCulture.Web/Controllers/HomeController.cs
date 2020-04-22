@@ -29,6 +29,7 @@
             var posts = this.postsService.GetAllPosts<IndexPostViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage);
 
             viewModel.Posts = posts;
+            viewModel.RecentlyRegisteredUsers = this.postsService.GetRecentlyRegisteredUsers();
 
             int count = this.postsService.GetCountOfPosts();
             viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
