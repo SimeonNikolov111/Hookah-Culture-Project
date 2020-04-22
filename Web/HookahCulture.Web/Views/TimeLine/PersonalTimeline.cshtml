@@ -27,10 +27,7 @@
                         </div>
                         <div class="col-md-9">
                             <ul class="list-inline profile-menu">
-                                <li><a href="timeline.html" class="active">Timeline</a></li>
-                                <li><a href="timeline-about.html">About</a></li>
-                                <li><a href="timeline-album.html">Album</a></li>
-                                <li><a href="timeline-friends.html">Friends</a></li>
+                                <li><a href="/Home/Index" class="active">Newsfeed</a></li>
                             </ul>
                             <ul class="follow-me list-inline">
                                 <li>
@@ -96,7 +93,7 @@
                                 <h5>@Model.User.FirstName</h5>
                                 @foreach (var post in Model.Posts)
                                 {
-                                    <p class="text-grey">@post.CreatedOn.ToShortDateString()</p>
+                                    <p class="text-grey" style="color:antiquewhite">@post.CreatedOn.ToShortDateString()</p>
                                 }
                             </div>
                             <!--Post Date End-->
@@ -110,7 +107,7 @@
                                         <img src="@profilePictureLocation" asp-append-version="true" alt="" class="profile-photo-md pull-left" />
                                         <div class="post-detail">
                                             <div class="user-info">
-                                                <h5><a href="timeline.html" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following">following</span></h5>
+                                                <h5><a href="timeline.html" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following"></span></h5>
                                                 <p class="text-muted"> Post published at: <time datetime="@post.CreatedOn.ToString("O")"></time></p>
                                             </div>
                                             <div class="reaction">
