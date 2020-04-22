@@ -50,7 +50,7 @@
                         <div class="row">
                             <div class="col-md-7 col-sm-7">
                                 <div class="form-group">
-                                    <img src="http://placehold.it/300x300" alt="" class="profile-photo-md" />
+                                    <img src="~/images/ProfilePictures/@currentUser.ProfilePicturePath" alt="" class="profile-photo-md" />
                                     <textarea name="text" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                         <form id="myForm_@post.Id" class="myform" asp-controller="Comment" asp-action="Create" method="post">
                                             <input type="hidden" name="PostId" id="postId" value="@post.Id" />
                                             <textarea name="text"></textarea>
-                                            <input type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
+                                            <input class="btn btn-primary" type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
                                         </form>
                                     </div>
                                 </div>

@@ -144,15 +144,35 @@
                                                         <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" asp-append-version="true" alt="" class="profile-photo-sm" />
                                                         <p id="returnTextHere"><a href="/Timeline/PersonalTimeline?timelineId=@comment.User.TimelineId" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
                                                     </div>
+                                                    @if (Model.User.Id == this.userManager.GetUserId(this.User))
+                                                    {
+                                                        <div>
+                                                            <form class="pull-right" asp-controller="Comment" asp-action="Delete" method="post">
+                                                                <input type="hidden" name="commentId" id="commentId" value="@comment.Id" />
+                                                                <input type="hidden" name="timelineId" id="timelineId" value="@Model.User.TimelineId" />
+                                                                <button class="pull-right btn btn-danger" asp-controller="Comment" asp-action="Delete" type="submit">Delete Comment</button>
+                                                            </form>
+                                                        </div>
+                                                    }
                                                 }
                                             </div>
                                             <div>
                                                 <form id="myForm_@post.Id" class="myform" asp-controller="Comment" asp-action="Create" method="post">
                                                     <input type="hidden" name="PostId" id="postId" value="@post.Id" />
                                                     <textarea name="text"></textarea>
-                                                    <input type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
+                                                    <input class="btn btn-primary" type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
                                                 </form>
                                             </div>
+                                            @if (Model.User.Id == this.userManager.GetUserId(this.User))
+                                            {
+                                                <div>
+                                                    <form class="pull-right" asp-controller="Post" asp-action="Delete" method="post">
+                                                        <input type="hidden" name="PostId" id="postId" value="@post.Id" />
+                                                        <input type="hidden" name="timelineId" id="timelineId" value="@Model.User.TimelineId" />
+                                                        <button class="pull-right btn btn-danger" asp-controller="Post" asp-action="Delete" type="submit">Delete Post</button>
+                                                    </form>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

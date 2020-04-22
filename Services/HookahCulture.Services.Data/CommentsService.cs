@@ -2,6 +2,7 @@
 using HookahCulture.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,14 @@ namespace HookahCulture.Services.Data
             await this.dbContext.Comments.AddAsync(comment);
 
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public void Delete(int commentId)
+        {
+            var comment = this.dbContext.Comments.Where(c => c.Id == commentId).FirstOrDefault();
+
+            this.dbContext.Comments.Remove(comment);
+            this.dbContext.SaveChanges();
         }
     }
 }

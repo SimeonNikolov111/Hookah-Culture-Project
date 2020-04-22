@@ -15,6 +15,8 @@ namespace HookahCulture.Services.Data
 
         void Create(string text, string imageUrl, string userId);
 
+        void Delete(int postId);
+
         int GetCountOfPosts();
 
         int GetCountOfPostsForSpecificUser(string userId);

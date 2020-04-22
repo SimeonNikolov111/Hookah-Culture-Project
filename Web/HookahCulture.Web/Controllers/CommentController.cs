@@ -1,6 +1,7 @@
 ﻿using HookahCulture.Data.Models;
 using HookahCulture.Services.Data;
 using HookahCulture.Web.ViewModels.Comment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,6 +22,7 @@ namespace HookahCulture.Web.Controllers
             this.commentsService = commentsService;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<CreateCommentInputViewModel>> Create(CreateCommentInputViewModel input)
         {
@@ -36,6 +38,15 @@ namespace HookahCulture.Web.Controllers
 
                 return this.NoContent();
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Delete(int commentId, string timelineId)
+        {
+            this.commentsService.Delete(commentId);
+
+            return this.Redirect($"/Timeline/PersonalTimeline?TimelineId={timelineId}");
         }
     }
 }

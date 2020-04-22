@@ -9,5 +9,7 @@ namespace HookahCulture.Services.Data
     public interface ICommentsService
     {
         Task Create(ApplicationUser user,string userId, int postId, string text);
+
+        void Delete(int commentId);
     }
 }

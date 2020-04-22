@@ -42,5 +42,14 @@
             this.postsService.Create(model.Text, uniqueFileName, userId);
             return this.Redirect("/Home/Index");
         }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Delete(int postId, string timelineId)
+        {
+            this.postsService.Delete(postId);
+
+            return this.Redirect($"/Timeline/PersonalTimeline?TimelineId={timelineId}");
+        }
     }
 }
