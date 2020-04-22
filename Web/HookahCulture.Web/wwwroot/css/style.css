@@ -2045,12 +2045,12 @@ input:checked + .slider:before{
   FAQ Page
   ==================================================*/
 
-.page-title-section.faq{
-  background: linear-gradient(to right, rgba(0,0,0, 0.5) , rgba(0,0,0, 0.5)), url("http://placehold.it/1920x500") fixed no-repeat;
-  background-size: cover;
-  background-position: center;
-  padding: 90px 0 110px;
-  color: #fff;
+.page-title-section.faq {
+    background: linear-gradient(to right, rgba(0,0,0, 0.5), rgba(0,0,0, 0.5)), url("/images/contact.jpg") fixed no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 90px 0 110px;
+    color: #fff;
 }  
 
 .page-title-section.faq h1{
