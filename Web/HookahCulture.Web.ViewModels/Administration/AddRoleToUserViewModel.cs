@@ -1,14 +1,17 @@
 ﻿using HookahCulture.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace HookahCulture.Web.ViewModels.Administration
 {
     public class AddRoleToUserViewModel
     {
+        [Required]
         public string RoleName { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public ICollection<ApplicationUser> Users { get; set; }

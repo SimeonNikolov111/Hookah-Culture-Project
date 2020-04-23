@@ -38,6 +38,8 @@
 
         public DbSet<GalleryVote> GalleryVotes { get; set; }
 
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+
 
         public override int SaveChanges() => this.SaveChanges(true);
 

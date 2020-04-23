@@ -6,6 +6,7 @@
 
     public class CreateCommentInputViewModel : IMapFrom<Comment>
     {
+        [Required]
         public int Id { get; set; }
 
         public ApplicationUser User { get; set; }

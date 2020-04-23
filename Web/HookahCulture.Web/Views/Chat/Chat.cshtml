@@ -1,4 +1,6 @@
 ﻿@using HookahCulture.Data.Models;
+@using System.Globalization;
+@model HookahCulture.Web.ViewModels.Chat.ChatViewModel;
 @inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
 
 @{
@@ -36,9 +38,25 @@
                         <div class="col-md-5">
                         </div>
                         <div class="col-md-7">
-                            <!--Chat Messages in Right-->
-                            <div class="tab-content scrollbar-wrapper wrapper scrollbar-outer">
+                            <div class="tab-content scrollbar-wrapper wrapper scrollbar-outer" id="scrollBarCustom">
                                 <div class="tab-pane active" id="contact-1">
+                                    @foreach (var message in Model.ChatMessages)
+                                    {
+                                        <div class="chat-body">
+                                            <ul class="chat-message">
+                                                <li class="left">
+                                                    <img src="../images/ProfilePictures/@message.ProfilePicturePath" alt="user" height="40" width="40" class="profile-photo-sm pull-left" />
+                                                    <div class="chat-item">
+                                                        <div class="chat-item-header">
+                                                            <h5 style="color:white">@message.FullName</h5>
+                                                            <time datetime="@DateTime.Parse(message.CreatedOn).ToString("O")" class="text-muted" style="color:antiquewhite"></time>
+                                                        </div>
+                                                        <p style="color:antiquewhite">@message.Message</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
                                     <div class="chat-body">
                                         <ul class="chat-message">
                                             <li class="left" style="color:ghostwhite" id="messagesList"></li>
@@ -46,9 +64,10 @@
                                     </div>
                                 </div>
                             </div><!--Chat Messages in Right End-->
-
                             <div id="message-holder" class="send-message">
                                 <input type="hidden" id="displayname" value="@currentUser.FirstName @currentUser.LastName" />
+                                <input type="hidden" id="userId" value="@currentUser.Id" />
+                                <input type="hidden" id="createdOn" value="@DateTime.UtcNow.ToString()" />
                                 <input class="form-control" type="text" id="messageInput" placeholder="Type your message" />
                                 <input type="hidden" id="profilePicturePath" value="@currentUser.ProfilePicturePath" />
                                 <span class="input-group-btn">
@@ -67,6 +86,7 @@
     </div>
 </div>
 
+<script src="~/lib/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
 
 
 @section Scripts {
@@ -78,25 +98,28 @@
         connection.on("NewMessage",
             function (message) {
                 var chatInfo = `<li class="left">
-                                 <img src="../images/ProfilePictures/${escapeHtml(message.profilePicturePath)}" alt="user" height="40" width="40" class="profile-photo-sm pull-left" />
-                                  <div class="chat-item">
-                                    <div class="chat-item-header">
-                                     <h5 style="color:white">${escapeHtml(message.name)}</h5>
-                                    </div>
-                                   <p>${escapeHtml(message.text)}</p>
-                                   </div>
-                                   </li>`;
+                                                 <img src="../images/ProfilePictures/${escapeHtml(message.profilePicturePath)}" alt="user" height="40" width="40" class="profile-photo-sm pull-left" />
+                                                  <div class="chat-item">
+                                                    <div class="chat-item-header">
+                                                     <h5 style="color:white">${escapeHtml(message.name)}</h5>
+                                                        <time class="text-muted" style="color:antiquewhite">@DateTime.Now.ToString("f", CultureInfo.InvariantCulture)</time>
+                                                    </div>
+                                                   <p>${escapeHtml(message.text)}</p>
+                                                   </div>
+                                                   </li>`;
                 $("#messagesList").append(chatInfo);
             });
         $("#sendButton").click(function () {
             var fullname = $("#displayname").val();
             var message = $("#messageInput").val();
             var profilePicturePath = $("#profilePicturePath").val();
-            connection.invoke("Send", fullname, message, profilePicturePath);
+            var timeSend = $("#createdOn").val();
+            connection.invoke("Send", fullname, message, profilePicturePath, timeSend);
         });
         connection.start().catch(function (err) {
             return console.error(err.toString());
         });
+
         function escapeHtml(unsafe) {
             return unsafe
                 .replace(/&/g, "&amp;")
@@ -112,6 +135,11 @@
                     $("#sendButton").click();
             });
         });
+
+        window.setInterval(function() {
+  var elem = document.getElementById('scrollBarCustom');
+  elem.scrollTop = elem.scrollHeight;
+}, 700);
 
     </script>
 }

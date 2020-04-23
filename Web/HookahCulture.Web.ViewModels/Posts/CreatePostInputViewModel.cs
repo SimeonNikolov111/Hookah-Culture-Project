@@ -1,6 +1,7 @@
 ﻿using HookahCulture.Services.Mapping;
 using HookahCulture.Data.Models;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace HookahCulture.Web.ViewModels.Posts
 {
@@ -10,6 +11,7 @@ namespace HookahCulture.Web.ViewModels.Posts
 
         public IFormFile PostCreationPictureUpload { get; set; }
 
+        [Required]
         public string UserId { get; set; }
     }
 }

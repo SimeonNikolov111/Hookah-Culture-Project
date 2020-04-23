@@ -71,6 +71,7 @@
             services.AddTransient<IUploadsService, UploadService>();
             services.AddTransient<IRolesService, RoleService>();
             services.AddTransient<IImagesService, ImageService>();
+            services.AddTransient<IChatService, ChatService>();
             services.AddSignalR();
         }
 
