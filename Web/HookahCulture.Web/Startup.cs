@@ -95,9 +95,9 @@
 
             if (env.IsDevelopment())
             {
-                //app.UseStatusCodePagesWithRedirects("Home/Error/{0}");
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseStatusCodePagesWithRedirects("/Home/Error");
+                //app.UseDeveloperExceptionPage();
+                //app.UseDatabaseErrorPage();
             }
             else
             {

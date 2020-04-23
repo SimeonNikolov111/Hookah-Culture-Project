@@ -19,7 +19,7 @@
             <div class="col-md-3 static">
                 <div class="profile-card">
                     <img src="~/images/ProfilePictures/@currentUser.ProfilePicturePath" alt="user" class="profile-photo" />
-                    <h5><a href="timeline.html" class="text-white">@currentUser.FirstName @currentUser.LastName</a></h5>
+                    <h5><a href="/Timeline/PersonalTimeline?timelineId=@currentUser.TimelineId" class="text-white">@currentUser.FirstName @currentUser.LastName</a></h5>
                     <a href="#" class="text-white"><i></i></a>
                 </div><!--profile card ends-->
                 <ul class="nav-news-feed">
@@ -71,7 +71,7 @@
                                 <input class="form-control" type="text" id="messageInput" placeholder="Type your message" />
                                 <input type="hidden" id="profilePicturePath" value="@currentUser.ProfilePicturePath" />
                                 <span class="input-group-btn">
-                                    <button id="sendButton" onclick="document.getElementById('messageInput').value = ''" name="sendButton" class="btn btn-default">Send</button>
+                                    <button type="submit" id="sendButton" onclick="document.getElementById('messageInput').value = ''" name="sendButton" class="btn btn-default">Send</button>
                                 </span>
                             </div>
                             <hr style="height: 5px;" class="bg-dark" />

@@ -37,7 +37,13 @@ namespace HookahCulture.Web.Controllers
         public IActionResult PersonalTimeline(string timelineId, int page = 1)
         {
             var viewModel = new PersonalTimelineInputViewModel();
+
             var user = this.dbContext.Users.Where(u => u.TimelineId == timelineId).FirstOrDefault();
+
+            if (user == null)
+            {
+                return this.View("NotFound");
+            }
 
             viewModel.User = user;
 
