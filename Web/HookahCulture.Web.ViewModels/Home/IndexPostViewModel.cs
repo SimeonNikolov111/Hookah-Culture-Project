@@ -5,6 +5,7 @@ using HookahCulture.Web.ViewModels.Comment;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace HookahCulture.Web.ViewModels.Home
@@ -15,6 +16,7 @@ namespace HookahCulture.Web.ViewModels.Home
 
         public DateTime CreatedOn { get; set; }
 
+        [MaxLength(250)]
         public string Text { get; set; }
 
         public IFormFile Image { get; set; }
@@ -25,6 +27,7 @@ namespace HookahCulture.Web.ViewModels.Home
 
         public int DownVotes { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }

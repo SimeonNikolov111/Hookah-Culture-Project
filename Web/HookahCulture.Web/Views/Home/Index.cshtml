@@ -15,10 +15,18 @@
         <div class="container">
             <div class="row">
                 <!-- Newsfeed Common Side Bar Left
-            ================================================= -->
+                ================================================= -->
                 <div class="col-md-3 static">
                     <div class="profile-card">
-                        <img src="@profilePictureLocation" asp-append-version="true" alt="user" class="profile-photo" />
+                        @if (currentUser.ProfilePicturePath == null)
+                        {
+                            <img src="~/images/ProfilePictures/exampleProfilePicture.png" asp-append-version="true" alt="user" class="profile-photo" />
+                        }
+                        else
+                        {
+                            <img src="@profilePictureLocation" asp-append-version="true" alt="user" class="profile-photo" />
+
+                        }
                         <h5><a href="/Timeline/PersonalTimeline?timelineId=@currentUser.TimelineId" class="text-white">@currentUser.FirstName @currentUser.LastName</a></h5>
                         <a href="#" class="text-white"><i></i></a>
                     </div><!--profile card ends-->
@@ -33,7 +41,19 @@
                             <div class="alert-info">Recently Registered Users!</div>
                             @foreach (var user in Model.RecentlyRegisteredUsers)
                             {
-                                <li><a href="/Timeline/PersonalTimeline?timelineId=@user.TimelineId" title="@user.FirstName @user.LastName"><img src="~/images/ProfilePictures/@user.ProfilePicturePath" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+                                <li>
+                                    <a href="/Timeline/PersonalTimeline?timelineId=@user.TimelineId" title="@user.FirstName @user.LastName">
+                                        @if (user.ProfilePicturePath == null)
+                                        {
+                                            <img src="~/images/ProfilePictures/exampleProfilePicture.png" alt="user" class="img-responsive profile-photo" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/ProfilePictures/@user.ProfilePicturePath" alt="user" class="img-responsive profile-photo" />
+                                        }
+                                        <span class="online-dot"></span>
+                                    </a>
+                                </li>
                             }
                         </ul>
                     </div><!--chat block ends-->
@@ -42,13 +62,20 @@
                 <div class="col-md-7">
 
                     <!-- Post Create Box
-                ================================================= -->
+                    ================================================= -->
                     <form enctype="multipart/form-data" class="create-post" asp-controller="Post" asp-action="Create">
                         <div class="row">
                             <div class="col-md-7 col-sm-7">
                                 <div class="form-group">
-                                    <img src="~/images/ProfilePictures/@currentUser.ProfilePicturePath" alt="" class="profile-photo-md" />
-                                    <textarea name="text" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
+                                    @if (currentUser.ProfilePicturePath == null)
+                                    {
+                                        <img src="~/images/ProfilePictures/exampleProfilePicture.png" alt="" class="profile-photo-md" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/ProfilePictures/@currentUser.ProfilePicturePath" alt="" class="profile-photo-md" />
+                                    }
+                                    <textarea maxlength="250" cols="30" rows="1" name="text" id="exampleTextarea" class="form-control" placeholder="Write what you wish"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-5 col-sm-5">
@@ -60,7 +87,7 @@
                         <button type="submit" asp-controller="Post" asp-action="Create" formmethod="post" class="btn btn-primary pull-right">Publish</button>
                     </form><!-- Post Create Box End-->
                     <!-- Post Content
-                ================================================= -->
+                    ================================================= -->
                     @foreach (var post in Model.Posts)
                     {
 
@@ -68,7 +95,14 @@
 
                         <div class="post-content">
                             <div class="post-container">
-                                <img src="~/images/ProfilePictures/@post.User.ProfilePicturePath" asp-append-version="true" alt="user" class="profile-photo-md pull-left" />
+                                @if (post.User.ProfilePicturePath == null)
+                                {
+                                    <img src="~/images/ProfilePictures/exampleProfilePicture.png" asp-append-version="true" alt="user" class="profile-photo-md pull-left" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/ProfilePictures/@post.User.ProfilePicturePath" asp-append-version="true" alt="user" class="profile-photo-md pull-left" />
+                                }
                                 <div class="post-detail">
                                     <div class="user-info">
                                         <h5><a href="/Timeline/PersonalTimeLine?timelineId=@post.User.TimelineId" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following">following</span></h5>
@@ -102,7 +136,14 @@
                                         @foreach (var comment in post.Comments)
                                         {
                                         <div class="post-comment">
-                                            <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" alt="" class="profile-photo-sm" />
+                                            @if (comment.User.ProfilePicturePath == null)
+                                            {
+                                                <img src="~/images/ProfilePictures/exampleProfilePicture.png" alt="" class="profile-photo-sm" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" alt="" class="profile-photo-sm" />
+                                            }
                                             <p id="returnTextHere"><a href="/Timeline/PersonalTimeLine?timelineId=@comment.User.TimelineId" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
                                         </div>
                                         }
@@ -110,7 +151,7 @@
                                     <div>
                                         <form id="myForm_@post.Id" class="myform" asp-controller="Comment" asp-action="Create" method="post">
                                             <input type="hidden" name="PostId" id="postId" value="@post.Id" />
-                                            <textarea name="text"></textarea>
+                                            <textarea name="text" maxlength="250"></textarea>
                                             <input class="btn btn-primary" type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
                                         </form>
                                     </div>
@@ -171,7 +212,7 @@
             <div class="spinner"></div>
         </div>
         <!-- Scripts
-    ================================================= -->
+        ================================================= -->
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTMXfmDn0VlqWIyoOxK8997L-amWbUPiQ&callback=initMap"></script>
         <script src="~/js/jquery-3.1.1.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
@@ -216,8 +257,6 @@
                 document.location.reload(true);
             });
         }
-
-
     </script>
 }
 

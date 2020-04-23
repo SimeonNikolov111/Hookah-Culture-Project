@@ -66,9 +66,13 @@ namespace HookahCulture.Web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required]
+            [MinLength(3)]
+            [MaxLength(15)]
             public string FirstName { get; set; }
 
             [Required]
+            [MinLength(3)]
+            [MaxLength(15)]
             public string LastName { get; set; }
         }
 

@@ -15,13 +15,27 @@
         ================================================= -->
         <div class="timeline">
             <div class="timeline-cover">
-                <img src=@coverPhotoLocation asp-append-version="true" alt="" class="img-responsive timeline-cover" />
+                @if (Model.User.ProfileCoverPath == null)
+                {
+                    <img src="~/images/CoverPhotos/coverExample.png" asp-append-version="true" alt="" class="img-responsive timeline-cover" />
+                }
+                else
+                {
+                    <img src=@coverPhotoLocation asp-append-version="true" alt="" class="img-responsive timeline-cover" />
+                }
                 <!--Timeline Menu for Large Screens-->
                 <div class="timeline-nav-bar hidden-sm hidden-xs">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="profile-info">
-                                <img src=@profilePictureLocation asp-append-version="true" alt="" class="img-responsive profile-photo" />
+                                @if (Model.User.ProfilePicturePath == null)
+                                {
+                                    <img src="~/images/ProfilePictures/exampleProfilePicture.png" asp-append-version="true" alt="" class="img-responsive profile-photo" />
+                                }
+                                else
+                                {
+                                    <img src=@profilePictureLocation asp-append-version="true" alt="" class="img-responsive profile-photo" />
+                                }
                                 <h3>@Model.User.FirstName @Model.User.LastName</h3>
                             </div>
                         </div>
@@ -64,8 +78,15 @@
                                 <div class="row">
                                     <div class="col-md-7 col-sm-7">
                                         <div class="form-group">
-                                            <img src="@profilePictureLocation" asp-append-version="true" alt="" class="profile-photo-md" />
-                                            <textarea name="text" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
+                                            @if (Model.User.ProfilePicturePath == null)
+                                            {
+                                                <img src="~/images/ProfilePictures/exampleProfilePicture.png" asp-append-version="true" alt="" class="profile-photo-md" />
+                                            }
+                                            else
+                                            {
+                                                <img src="@profilePictureLocation" asp-append-version="true" alt="" class="profile-photo-md" />
+                                            }
+                                            <textarea name="text" id="exampleTextarea" maxlength="250" cols="30" rows="1" class="form-control" placeholder="Write what you wish"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5">
@@ -104,7 +125,15 @@
 
                                 <div class="post-content">
                                     <div class="post-container">
-                                        <img src="@profilePictureLocation" asp-append-version="true" alt="" class="profile-photo-md pull-left" />
+                                        @if (post.User.ProfilePicturePath == null)
+                                        {
+                                            <img src="~/images/ProfilePictures/exampleProfilePicture.png" asp-append-version="true" alt="" class="profile-photo-md pull-left" />
+                                        }
+                                        else
+                                        {
+                                            <img src="@profilePictureLocation" asp-append-version="true" alt="" class="profile-photo-md pull-left" />
+
+                                        }
                                         <div class="post-detail">
                                             <div class="user-info">
                                                 <h5><a href="timeline.html" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following"></span></h5>
@@ -138,7 +167,14 @@
                                                 @foreach (var comment in post.Comments)
                                                 {
                                                     <div class="post-comment">
-                                                        <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" asp-append-version="true" alt="" class="profile-photo-sm" />
+                                                        @if (comment.User.ProfilePicturePath == null)
+                                                        {
+                                                            <img src="~/images/ProfilePictures/exampleProfilePicture.png" asp-append-version="true" alt="" class="profile-photo-sm" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/images/ProfilePictures/@comment.User.ProfilePicturePath" asp-append-version="true" alt="" class="profile-photo-sm" />
+                                                        }
                                                         <p id="returnTextHere"><a href="/Timeline/PersonalTimeline?timelineId=@comment.User.TimelineId" class="profile-link">@comment.User.FirstName @comment.User.LastName</a><i></i> @comment.Text</p>
                                                     </div>
                                                     @if (Model.User.Id == this.userManager.GetUserId(this.User))
@@ -156,7 +192,7 @@
                                             <div>
                                                 <form id="myForm_@post.Id" class="myform" asp-controller="Comment" asp-action="Create" method="post">
                                                     <input type="hidden" name="PostId" id="postId" value="@post.Id" />
-                                                    <textarea name="text"></textarea>
+                                                    <textarea name="text" maxlength="250"></textarea>
                                                     <input class="btn btn-primary" type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
                                                 </form>
                                             </div>
