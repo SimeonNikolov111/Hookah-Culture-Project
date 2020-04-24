@@ -16,12 +16,10 @@ namespace HookahCulture.Services.Data
     public class PostsService : IPostsService
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly UserManager<ApplicationUser> userManager;
 
-        public PostsService(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public PostsService(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.userManager = userManager;
         }
 
         public IEnumerable<T> GetAllPosts<T>(int? take = 5, int skip = 0)

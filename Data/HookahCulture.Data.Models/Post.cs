@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using HookahCulture.Data.Common.Models;
+    using HookahCulture.Services.Mapping;
 
     public class Post : BaseDeletableModel<int>
     {

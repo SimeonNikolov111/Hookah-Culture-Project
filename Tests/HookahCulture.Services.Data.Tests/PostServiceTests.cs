@@ -1,5 +1,7 @@
 ﻿using HookahCulture.Data.Models;
 using HookahCulture.Services.Data.Tests.Common;
+using HookahCulture.Web.ViewModels.Home;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,100 +12,131 @@ namespace HookahCulture.Services.Data.Tests
 {
     public class PostServiceTests
     {
-        [Fact]
-        public void TestIfCountIsCorrectWhenGettingPosts()
-        {
-            var posts = this.PostSeeder();
+        //[Fact]
+        //public void TestIfCorrectCountIsReturned()
+        //{
+        //    var context = InMemoryDbContextInitializer.InitializeContext();
+        //    AutoMapperInitializer.InitializeMapper();
 
-            int postsCount = posts.Count();
+        //    PostsService postService = new PostsService(context);
+        //    context.Posts.AddRange(this.PostSeeder());
+        //    context.SaveChanges();
 
-            int expectedCount = 2;
+        //    var posts = postService.GetAllPosts<IndexViewModel>();
 
-            Assert.Equal(expectedCount, postsCount);
-        }
+        //    int expectedCount = 2;
 
-        [Fact]
-        public void TestIfPostDataIsCorrect()
-        {
-            string exampleText = "Hey this is my first post";
-            string exampleImagePath = "~/images/testPath.jpg";
+        //    Assert.Equal(expectedCount, posts.Count());
+        //}
 
-            var postFromDatabase = this.PostSeeder().FirstOrDefault();
-
-            Assert.Equal(exampleText, postFromDatabase.Text);
-            Assert.Equal(exampleImagePath, postFromDatabase.ImagePath);
-        }
 
         [Fact]
-        public void TestIfUserIsHavingCorrectPostsCount()
-        {
-            var user = this.GetUser();
-
-            int userPostsCount = user.Posts.Count();
-
-            int expectedCount = 1;
-
-            Assert.Equal(userPostsCount, expectedCount);
-        }
-
-        [Fact]
-        public void TestIfCreateWorksSuccessfully() 
+        public void TestPostCreation()
         {
             var context = InMemoryDbContextInitializer.InitializeContext();
-            var user = this.GetUser();
 
-            var post = new Post()
-            {
-                Text = "Hello",
-                ImagePath = "examplePath",
-                UserId = "someID",
-                User = user,
-            };
+            PostsService postService = new PostsService(context);
 
-            int expectedPostCountInDb = 2;
+            postService.Create("Some text", "exmaplePath.jpg", "testId");
 
-            user.Posts.Add(post);
-            context.SaveChanges();
+            int expectedCountAfterCreation = 1;
 
-            Assert.Equal(expectedPostCountInDb, user.Posts.Count());
+            Assert.Equal(expectedCountAfterCreation, context.Posts.Count());
         }
 
         [Fact]
-        public void TestIfDeleteWorksCorrectly() 
+        public void TestPostDelete()
         {
-            var user = this.GetUser();
+            var context = InMemoryDbContextInitializer.InitializeContext();
 
-            var postToRemove = user.Posts.FirstOrDefault();
-            postToRemove.IsDeleted = true;
+            PostsService postService = new PostsService(context);
 
-            var expectedBoolWhenDeleted = true;
+            var posts = this.PostSeeder();
+            context.Posts.AddRange(posts);
+            context.SaveChanges();
 
-            Assert.Equal(expectedBoolWhenDeleted, postToRemove.IsDeleted);
+            var post = context.Posts.FirstOrDefault();
+
+            postService.Delete(post.Id);
+
+            bool expectedState = true;
+
+            Assert.Equal(expectedState, post.IsDeleted);
         }
+
+        [Fact]
+        public void TestingGetCountOfPostsForSpecificUser()
+        {
+            var context = InMemoryDbContextInitializer.InitializeContext();
+
+            PostsService postService = new PostsService(context);
+
+            context.Users.Add(this.GetUser());
+            context.SaveChanges();
+
+            int count = postService.GetCountOfPostsForSpecificUser("someID");
+
+            Assert.Equal(2, count);
+        }
+
+        [Fact]
+        public void TestingGetCountOfPosts() 
+        {
+            var context = InMemoryDbContextInitializer.InitializeContext();
+
+            PostsService postService = new PostsService(context);
+
+            context.Posts.AddRange(this.PostSeeder());
+            context.SaveChanges();
+
+            var countOfPosts = postService.GetCountOfPosts();
+
+            Assert.Equal(2, countOfPosts);
+        }
+
+        [Fact]
+        public void TestingGetRecentlyRegisteredUsers() 
+        {
+            var context = InMemoryDbContextInitializer.InitializeContext();
+
+            PostsService postService = new PostsService(context);
+
+            context.Users.Add(this.GetUser());
+            context.SaveChanges();
+
+            int userCount = postService.GetRecentlyRegisteredUsers().Count();
+
+            Assert.Equal(1, userCount);
+        }
+
 
         public ICollection<Post> PostSeeder()
         {
-            var context = InMemoryDbContextInitializer.InitializeContext();
-
             var posts = new List<Post>();
 
             var post = new Post()
             {
+                Id = 1,
                 Text = "Hey this is my first post",
                 ImagePath = "~/images/testPath.jpg",
+                UserId = "someId",
+                CreatedOn = new DateTime(2020, 04, 20),
+                IsDeleted = false,
             };
 
             var post2 = new Post()
             {
+                Id = 2,
                 Text = "Hey this is my second post",
                 ImagePath = "~/images/testPath2.jpg",
+                UserId = "someId2",
+                CreatedOn = new DateTime(2020, 04, 20),
+                IsDeleted = false,
             };
+
 
             posts.Add(post);
             posts.Add(post2);
-
-            context.Posts.AddRange(posts);
-            context.SaveChanges();
 
             return posts;
         }

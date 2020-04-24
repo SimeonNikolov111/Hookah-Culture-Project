@@ -1,4 +1,5 @@
-﻿using HookahCulture.Services.Mapping;
+﻿using HookahCulture.Data.Models;
+using HookahCulture.Services.Mapping;
 using HookahCulture.Web.ViewModels.Home;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace HookahCulture.Services.Data.Tests.Common
 {
     public class AutoMapperInitializer
     {
-        public static void InitMapper()
+        public static void InitializeMapper()
         {
             AutoMapperConfig.RegisterMappings(
-               typeof(IndexViewModel).GetTypeInfo().Assembly,
-               typeof(IndexPostViewModel).GetTypeInfo().Assembly);
+               typeof(IndexPostViewModel).GetTypeInfo().Assembly,
+               typeof(Post).GetTypeInfo().Assembly);
         }
     }
 }

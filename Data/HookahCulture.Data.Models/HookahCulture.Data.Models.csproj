@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\HookahCulture.Services.Mapping\HookahCulture.Services.Mapping.csproj" />
     <ProjectReference Include="..\HookahCulture.Data.Common\HookahCulture.Data.Common.csproj" />
   </ItemGroup>
   
