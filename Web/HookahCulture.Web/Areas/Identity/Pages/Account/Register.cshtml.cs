@@ -115,7 +115,7 @@ namespace HookahCulture.Web.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return this.Redirect("~/Identity/Account/Login");
                     }
                 }
                 foreach (var error in result.Errors)
