@@ -22,6 +22,7 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var viewModel = new GalleryViewModel();
@@ -35,6 +36,7 @@
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Approve(int imageId)
         {
             this.imagesService.GetImageForApproval(imageId);

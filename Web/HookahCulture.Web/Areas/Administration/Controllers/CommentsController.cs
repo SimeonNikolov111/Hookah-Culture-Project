@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HookahCulture.Data;
 using HookahCulture.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HookahCulture.Web.Areas.Administration.Controllers
 {
@@ -21,6 +22,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Comments
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Comments.Include(c => c.Post).Include(c => c.User);
@@ -28,6 +30,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Comments/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,6 +51,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Comments/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "UserId");
@@ -60,6 +64,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Text,PostId,UserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Comment comment)
         {
             if (ModelState.IsValid)
@@ -74,6 +79,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Comments/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,6 +102,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Text,PostId,UserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Comment comment)
         {
             if (id != comment.Id)
@@ -129,6 +136,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Comments/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -151,6 +159,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         // POST: Administration/Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var comment = await _context.Comments.FindAsync(id);

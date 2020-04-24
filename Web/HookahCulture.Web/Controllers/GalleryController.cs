@@ -1,6 +1,7 @@
 ﻿using HookahCulture.Data.Models;
 using HookahCulture.Services.Data;
 using HookahCulture.Web.ViewModels.Gallery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace HookahCulture.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var viewModel = new GalleryViewModel();
@@ -42,6 +44,7 @@ namespace HookahCulture.Web.Controllers
             return this.View(viewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> UploadImage(GalleryViewModel model)
         {
             var user = await this.userManager.GetUserAsync(this.User);

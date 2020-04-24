@@ -20,7 +20,7 @@
                     <div class="profile-card">
                         @if (currentUser.ProfilePicturePath == null)
                         {
-                            <img src="~/images/ProfilePictures/exampleProfilePicture.png" asp-append-version="true" alt="user" class="profile-photo" />
+                            <img src="~/images/ProfilePictures/exampleProfilePicture.png"  asp-append-version="true" alt="user" class="profile-photo" />
                         }
                         else
                         {
@@ -129,7 +129,7 @@
                                     }
                                     else
                                     {
-                                        <button class="form-control" onclick="showCommentsFunction(@post.Id)" style="">Show All Comments</button>
+                                        <button class="btn btn-primary btn-lg btn-block" onclick="showCommentsFunction(@post.Id)" style="">Show All Comments</button>
                                     }
                                     <div class="line-divider"></div>
                                     <div id="@post.Id" style="display: none">

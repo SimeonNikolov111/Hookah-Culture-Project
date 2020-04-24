@@ -23,6 +23,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Posts
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Posts.Include(p => p.User);
@@ -30,6 +31,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Posts/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,6 +51,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Posts/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -60,6 +63,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Text,ImagePath,UserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Post post)
         {
             if (ModelState.IsValid)
@@ -73,6 +77,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Posts/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,6 +99,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Text,ImagePath,UserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Post post)
         {
             if (id != post.Id)
@@ -126,6 +132,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         }
 
         // GET: Administration/Posts/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,6 +154,7 @@ namespace HookahCulture.Web.Areas.Administration.Controllers
         // POST: Administration/Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var post = await _context.Posts.FindAsync(id);

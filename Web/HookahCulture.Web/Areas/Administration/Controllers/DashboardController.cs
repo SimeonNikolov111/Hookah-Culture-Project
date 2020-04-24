@@ -3,6 +3,7 @@
     using HookahCulture.Data.Models;
     using HookahCulture.Services.Data;
     using HookahCulture.Web.ViewModels.Administration.Dashboard;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@
             this.settingsService = settingsService;
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Index()
         {
             var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };

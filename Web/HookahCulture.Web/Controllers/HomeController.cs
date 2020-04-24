@@ -44,6 +44,7 @@
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [Authorize]
         public IActionResult Error()
         {
             return this.View("NotFound");
