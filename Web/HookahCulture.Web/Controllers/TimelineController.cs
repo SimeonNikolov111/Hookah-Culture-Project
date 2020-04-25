@@ -67,16 +67,21 @@ namespace HookahCulture.Web.Controllers
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            string uniqueFileName = null;
-            if (model.ProfilePicture != null)
+            if (this.ModelState.IsValid)
             {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images/ProfilePictures");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfilePicture.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                model.ProfilePicture.CopyTo(new FileStream(filePath, FileMode.Create));
-            }
+                string uniqueFileName = null;
+                if (model.ProfilePicture != null)
+                {
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images/ProfilePictures");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfilePicture.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    model.ProfilePicture.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
 
-            await this.uploadsService.UploadProfilePicture(user, uniqueFileName);
+                await this.uploadsService.UploadProfilePicture(user, uniqueFileName);
+
+                return this.Redirect($"/Timeline/PersonalTimeLine?timelineId={user.TimelineId}");
+            }
 
             return this.Redirect($"/Timeline/PersonalTimeLine?timelineId={user.TimelineId}");
         }
@@ -87,17 +92,21 @@ namespace HookahCulture.Web.Controllers
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            string uniqueFileName = null;
-            if (model.CoverPhoto != null)
+            if (this.ModelState.IsValid)
             {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images/CoverPhotos");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CoverPhoto.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                model.CoverPhoto.CopyTo(new FileStream(filePath, FileMode.Create));
+                string uniqueFileName = null;
+                if (model.CoverPhoto != null)
+                {
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images/CoverPhotos");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CoverPhoto.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    model.CoverPhoto.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+
+                await this.uploadsService.UploadCoverPhoto(user, uniqueFileName);
+
+                return this.Redirect($"/Timeline/PersonalTimeLine?timelineId={user.TimelineId}");
             }
-
-            await this.uploadsService.UploadCoverPhoto(user, uniqueFileName);
-
             return this.Redirect($"/Timeline/PersonalTimeLine?timelineId={user.TimelineId}");
         }
     }

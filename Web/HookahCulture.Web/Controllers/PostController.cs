@@ -28,18 +28,23 @@
         [HttpPost]
         public IActionResult Create(CreatePostInputViewModel model)
         {
-            string userId = this.userManager.GetUserId(this.User);
-
-            string uniqueFileName = null;
-            if (model.PostCreationPictureUpload != null)
+            if (this.ModelState.IsValid)
             {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.PostCreationPictureUpload.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                model.PostCreationPictureUpload.CopyTo(new FileStream(filePath, FileMode.Create));
+                string userId = this.userManager.GetUserId(this.User);
+
+                string uniqueFileName = null;
+                if (model.PostCreationPictureUpload != null)
+                {
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.PostCreationPictureUpload.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    model.PostCreationPictureUpload.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+
+                this.postsService.Create(model.Text, uniqueFileName, userId);
+                return this.Redirect("/Home/Index");
             }
 
-            this.postsService.Create(model.Text, uniqueFileName, userId);
             return this.Redirect("/Home/Index");
         }
 
