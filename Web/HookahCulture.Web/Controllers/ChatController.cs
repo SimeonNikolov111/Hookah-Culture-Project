@@ -1,10 +1,8 @@
 ﻿namespace HookahCulture.Web.Controllers
 {
-    using HookahCulture.Data.Models;
     using HookahCulture.Services.Data;
     using HookahCulture.Web.ViewModels.Chat;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     public class ChatController : Controller

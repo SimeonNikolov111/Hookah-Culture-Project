@@ -3,6 +3,7 @@ using HookahCulture.Data.Models;
 using HookahCulture.Services.Mapping;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
@@ -20,8 +21,10 @@ namespace HookahCulture.Web.ViewModels.Gallery
 
         public int DownVotes { get; set; }
 
+        [Required]
         public string UserWhoUploaded { get; set; }
 
+        [Required]
         public string UserTimeLineId { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)

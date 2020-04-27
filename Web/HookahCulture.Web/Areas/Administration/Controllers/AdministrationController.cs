@@ -84,11 +84,18 @@
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddRoleToUser(AddRoleToUserViewModel viewModel)
         {
-            var user = this.roleService.GetUser(viewModel.UserId);
+            if (this.ModelState.IsValid)
+            {
+                var user = this.roleService.GetUser(viewModel.UserId);
 
-            await this.userManager.AddToRoleAsync(user, viewModel.RoleName);
+                await this.userManager.AddToRoleAsync(user, viewModel.RoleName);
 
-            return this.Redirect("/Administration/Administration/AddRoleToUser");
+                return this.Redirect("/Administration/Administration/AddRoleToUser");
+            }
+            else
+            {
+                return this.View(viewModel);
+            }
         }
 
         [HttpGet]
@@ -111,11 +118,18 @@
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> RemoveRoleFromUser(RemoveRoleFromUserViewModel viewModel)
         {
-            var user = this.roleService.GetUser(viewModel.UserId);
+            if (this.ModelState.IsValid)
+            {
+                var user = this.roleService.GetUser(viewModel.UserId);
 
-            await this.userManager.RemoveFromRoleAsync(user, viewModel.RoleName);
+                await this.userManager.RemoveFromRoleAsync(user, viewModel.RoleName);
 
-            return this.Redirect("/Administration/Administration/RemoveRoleFromUser");
+                return this.Redirect("/Administration/Administration/RemoveRoleFromUser");
+            }
+            else
+            {
+                return this.View(viewModel);
+            }
         }
     }
 }

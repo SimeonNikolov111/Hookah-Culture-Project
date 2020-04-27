@@ -3,6 +3,7 @@
 @inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
 
 @{
+    var currentUser = await this.userManager.GetUserAsync(this.User);
     string profilePictureLocation = "~/images/ProfilePictures/" + Model.User.ProfilePicturePath;
     string coverPhotoLocation = "~/images/CoverPhotos/" + Model.User.ProfileCoverPath;
 }
@@ -91,6 +92,7 @@
                                     </div>
                                     <div class="col-md-5 col-sm-5">
                                         <div class="tools">
+                                            <input type="hidden" name="userId" value="@currentUser.Id"/>
                                             <input asp-for="PostCreationPictureUpload" />
                                         </div>
                                     </div>
@@ -192,6 +194,7 @@
                                             <div>
                                                 <form id="myForm_@post.Id" class="myform" asp-controller="Comment" asp-action="Create" method="post">
                                                     <input type="hidden" name="PostId" id="postId" value="@post.Id" />
+                                                    <input type="hidden" name="userId" id="userId" value="@currentUser.Id" />
                                                     <textarea name="text" maxlength="250"></textarea>
                                                     <input class="btn btn-primary" type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
                                                 </form>

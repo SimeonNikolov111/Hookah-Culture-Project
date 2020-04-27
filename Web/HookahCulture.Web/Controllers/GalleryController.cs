@@ -51,7 +51,7 @@ namespace HookahCulture.Web.Controllers
 
             string uniqueFileName = null;
 
-            if (model.ImageUpload != null)
+            if (model.ImageUpload != null && this.ModelState.IsValid)
             {
                 string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images/Gallery");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
@@ -59,9 +59,13 @@ namespace HookahCulture.Web.Controllers
                 model.ImageUpload.CopyTo(new FileStream(filePath, FileMode.Create));
 
                 this.uploadsService.UploadImageInGallery(user, uniqueFileName);
-            }
 
-            return this.Redirect("/Gallery/Index");
+                return this.Redirect("/Gallery/Index");
+            }
+            else
+            {
+                return this.Redirect("/Gallery/Index");
+            }
         }
     }
 }

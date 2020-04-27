@@ -30,8 +30,6 @@
         {
             if (this.ModelState.IsValid)
             {
-                string userId = this.userManager.GetUserId(this.User);
-
                 string uniqueFileName = null;
                 if (model.PostCreationPictureUpload != null)
                 {
@@ -41,7 +39,7 @@
                     model.PostCreationPictureUpload.CopyTo(new FileStream(filePath, FileMode.Create));
                 }
 
-                this.postsService.Create(model.Text, uniqueFileName, userId);
+                this.postsService.Create(model.Text, uniqueFileName, model.UserId);
                 return this.Redirect("/Home/Index");
             }
 

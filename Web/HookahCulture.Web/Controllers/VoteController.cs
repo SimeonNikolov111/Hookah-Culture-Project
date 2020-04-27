@@ -29,11 +29,18 @@
         [HttpPost]
         public async Task<ActionResult<VoteResponseModel>> Post(VoteInputModel input)
         {
-            var userId = this.userManager.GetUserId(this.User);
-            await this.votesService.VoteAsync(input.PostId, userId, input.IsUpVote);
-            var upVotes = this.votesService.GetUpVotes(input.PostId);
-            var downVotes = this.votesService.GetDownVotes(input.PostId);
-            return new VoteResponseModel { UpVotes = upVotes, DownVotes = downVotes };
+            if (this.ModelState.IsValid)
+            {
+                var userId = this.userManager.GetUserId(this.User);
+                await this.votesService.VoteAsync(input.PostId, userId, input.IsUpVote);
+                var upVotes = this.votesService.GetUpVotes(input.PostId);
+                var downVotes = this.votesService.GetDownVotes(input.PostId);
+                return new VoteResponseModel { UpVotes = upVotes, DownVotes = downVotes };
+            }
+            else
+            {
+                return this.NoContent();
+            }
         }
     }
 }

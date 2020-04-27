@@ -80,6 +80,7 @@
                             </div>
                             <div class="col-md-5 col-sm-5">
                                 <div class="tools">
+                                    <input type="hidden" name="userId" value="@currentUser.Id" />
                                     <input asp-for="PostCreationPictureUpload" />
                                 </div>
                             </div>
@@ -105,7 +106,7 @@
                                 }
                                 <div class="post-detail">
                                     <div class="user-info">
-                                        <h5><a href="/Timeline/PersonalTimeLine?timelineId=@post.User.TimelineId" class="profile-link">@post.User.FirstName @post.User.LastName</a> <span class="following">following</span></h5>
+                                        <h5><a href="/Timeline/PersonalTimeLine?timelineId=@post.User.TimelineId" class="profile-link">@post.User.FirstName @post.User.LastName</a></h5>
                                         <p class="text-muted"> Post published at: <time datetime="@post.CreatedOn.ToString("O")"></time></p>
                                     </div>
                                     <div class="reaction">
@@ -151,6 +152,7 @@
                                     <div>
                                         <form id="myForm_@post.Id" class="myform" asp-controller="Comment" asp-action="Create" method="post">
                                             <input type="hidden" name="PostId" id="postId" value="@post.Id" />
+                                            <input type="hidden" name="userId" id="postId" value="@currentUser.Id"/>
                                             <textarea name="text" maxlength="250"></textarea>
                                             <input class="btn btn-primary" type="submit" onclick="sendComment(@post.Id)" value="Submit Comment" />
                                         </form>

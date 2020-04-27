@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
 
+
     [ApiController]
     [Route("api/[controller]")]
     public class GalleryVoteController : ControllerBase
@@ -25,11 +26,16 @@
         [HttpPost]
         public async Task<ActionResult<VoteResponseModel>> Vote(ImageVoteInputModel input)
         {
-            var userId = this.userManager.GetUserId(this.User);
-            await this.galleryVotesService.GalleryVoteAsync(input.ImageId, userId, input.IsUpVote);
-            var upVotes = this.galleryVotesService.GetGalleryUpVotes(input.ImageId);
-            var downVotes = this.galleryVotesService.GetGalleryDownVotes(input.ImageId);
-            return new VoteResponseModel { UpVotes = upVotes, DownVotes = downVotes };
+            if (this.ModelState.IsValid)
+            {
+                var userId = this.userManager.GetUserId(this.User);
+                await this.galleryVotesService.GalleryVoteAsync(input.ImageId, userId, input.IsUpVote);
+                var upVotes = this.galleryVotesService.GetGalleryUpVotes(input.ImageId);
+                var downVotes = this.galleryVotesService.GetGalleryDownVotes(input.ImageId);
+                return new VoteResponseModel { UpVotes = upVotes, DownVotes = downVotes };
+            }
+
+            return this.NoContent();
         }
     }
 }

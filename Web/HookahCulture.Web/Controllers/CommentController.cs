@@ -26,16 +26,15 @@ namespace HookahCulture.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<CreateCommentInputViewModel>> Create(CreateCommentInputViewModel input)
         {
-            if (string.IsNullOrEmpty(input.Text))
+            if (this.ModelState.IsValid)
             {
+                var user = await this.userManager.GetUserAsync(this.User);
+                await this.commentsService.Create(user, input.UserId, input.PostId, input.Text);
+
                 return this.NoContent();
             }
             else
             {
-                var userId = this.userManager.GetUserId(this.User);
-                var user = await this.userManager.GetUserAsync(this.User);
-                await this.commentsService.Create(user, userId, input.PostId, input.Text);
-
                 return this.NoContent();
             }
         }
